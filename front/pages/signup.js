@@ -1,9 +1,8 @@
 import React from "react";
-import Link from "next/link";
-import Head from "next/head";
 import AppLayout from "../components/AppLayout";
+import Head from "next/head";
 
-const Home = () => {
+const Signup = () => {
     return (
         <>
             <Head>
@@ -13,10 +12,10 @@ const Home = () => {
                     href='https://cdnjs.cloudflare.com/ajax/libs/antd/4.2.2/antd.compact.min.css'></link>
             </Head>
             <AppLayout>
-                <div>Hello, Next</div>
+                <div>회원가입</div>
             </AppLayout>
         </>
     );
 };
 
-export default Home;
+export default Signup;
