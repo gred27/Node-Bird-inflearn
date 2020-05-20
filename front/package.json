@@ -11,6 +11,7 @@
         "start": "npx next start"
     },
     "dependencies": {
+        "@ant-design/icons": "^4.1.0",
         "antd": "^4.2.2",
         "next": "^9.4.0",
         "prop-types": "^15.7.2",
