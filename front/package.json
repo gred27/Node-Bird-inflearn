@@ -1,0 +1,25 @@
+{
+    "name": "nodebird",
+    "version": "1.0.0",
+    "description": "node-bird-sns practice",
+    "main": "index.js",
+    "author": "Gred",
+    "license": "MIT",
+    "scripts": {
+        "dev": "npx next",
+        "build": "npx next build",
+        "start": "npx next start"
+    },
+    "dependencies": {
+        "antd": "^4.2.2",
+        "next": "^9.4.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "webpack": "^4.43.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.0.0",
+        "eslint-plugin-react": "^7.20.0",
+        "eslint-plugin-react-hooks": "^4.0.1"
+    }
+}
