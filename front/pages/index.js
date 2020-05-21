@@ -43,7 +43,7 @@ const Home = () => {
                                     <div key={v} style={{ display: "inline-block" }}>
                                         <img
                                             src={"http://localhost:3000/" + v}
-                                            style={{ width: "200px" }}
+                                            style={{ width: 200, height: 200 }}
                                             alt={v}
                                         />
                                         <div>
@@ -59,7 +59,15 @@ const Home = () => {
                     return (
                         <Card
                             key={+c.createdAt}
-                            cover={c.img && <img alt='example' src={c.img} />}
+                            cover={
+                                c.img && (
+                                    <img
+                                        alt='example'
+                                        src={c.img}
+                                        style={{ width: 200, height: 200 }}
+                                    />
+                                )
+                            }
                             actions={[
                                 <RetweetOutlined key='retweet' />,
                                 <HeartOutlined key='heart' />,
