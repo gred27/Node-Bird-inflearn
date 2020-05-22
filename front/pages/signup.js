@@ -9,6 +9,16 @@ const TextInput = ({ value }) => {
 TextInput.propTypes = {
     value: PropTypes.string,
 };
+
+// custom Hook 사용하면
+export const useInput = (initValue = null) => {
+    const [value, setter] = useState(initValue);
+    const handler = useCallback((e) => {
+        setter(e.target.value);
+    });
+    return [value, handler];
+};
+
 const Signup = () => {
     // const [id, setId] = useState("");
     // const [nick, setNick] = useState("");
@@ -18,14 +28,6 @@ const Signup = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [termError, setTermError] = useState(false);
 
-    // custom Hook 사용하면
-    const useInput = (initValue = null) => {
-        const [value, setter] = useState(initValue);
-        const handler = useCallback((e) => {
-            setter(e.target.value);
-        });
-        return [value, handler];
-    };
     const [id, onChangeId] = useInput("");
     const [nick, onChangeNick] = useInput("");
     const [password, onChangePassword] = useInput("");

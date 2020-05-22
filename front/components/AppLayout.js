@@ -1,7 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import PropTypes from "prop-types";
-import { Menu, Input, Button, Row, Col, Card, Avatar } from "antd";
+import { Menu, Input, Row, Col, Card, Avatar } from "antd";
+import LoginForm from "./LoginForm";
 
 const dummy = {
     nickname: "gred",
@@ -28,45 +29,45 @@ const AppLayout = ({ children }) => {
                     <Input.Search enterButton style={{ verticalAlign: "middle" }}></Input.Search>
                 </Menu.Item>
             </Menu>
-            <Link href='/signup'>
-                <a>
-                    <Button>회원가입</Button>
-                </a>
-            </Link>
             <Row gutter={10}>
                 <Col xs={24} md={6}>
-                    <Card
-                        actions={[
-                            <div key='twit'>
-                                쨱짹
-                                <br />
-                                {dummy.Post.length}
-                            </div>,
-                            <div key='twit'>
-                                팔로잉
-                                <br />
-                                {dummy.Fllowings.length}
-                            </div>,
-                            <div key='twit'>
-                                팔로워
-                                <br />
-                                {dummy.Fllowers.length}
-                            </div>,
-                        ]}>
-                        <Card.Meta
-                            avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
-                            title={dummy.nickanme}
-                        />
-                    </Card>
+                    {dummy.isLoggedIn ? (
+                        <Card
+                            actions={[
+                                <div key='twit'>
+                                    쨱짹
+                                    <br />
+                                    {dummy.Post.length}
+                                </div>,
+                                <div key='twit'>
+                                    팔로잉
+                                    <br />
+                                    {dummy.Fllowings.length}
+                                </div>,
+                                <div key='twit'>
+                                    팔로워
+                                    <br />
+                                    {dummy.Fllowers.length}
+                                </div>,
+                            ]}>
+                            <Card.Meta
+                                avatar={<Avatar>{dummy.nickname[0]}</Avatar>}
+                                title={dummy.nickanme}
+                            />
+                        </Card>
+                    ) : (
+                        <LoginForm />
+                    )}
                 </Col>
                 <Col xs={24} md={12}>
-                    HI
+                    {children}
                 </Col>
                 <Col xs={24} md={6}>
-                    HI
+                    <Link href=''>
+                        <a target='_blank'>github. gred27</a>
+                    </Link>
                 </Col>
             </Row>
-            {children}
         </div>
     );
 };
