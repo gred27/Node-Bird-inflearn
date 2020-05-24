@@ -37,7 +37,9 @@ const reducer = (state = initialState, action) => {
             };
         }
         default:
-            return;
+            return {
+                ...state,
+            };
     }
 };
 
