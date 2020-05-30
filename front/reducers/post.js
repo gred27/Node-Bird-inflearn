@@ -1,6 +1,15 @@
 // 초기 state
 export const initialState = {
-    mainPost: [],
+    mainPosts: [
+        {
+            User: {
+                id: 1,
+                nickname: "gred",
+            },
+            content: "first message",
+            img: "/image/dummy_image.jpg",
+        },
+    ],
 };
 
 // action의 이름

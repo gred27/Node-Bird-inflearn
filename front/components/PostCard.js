@@ -9,7 +9,6 @@ import {
 } from "@ant-design/icons";
 
 const PostCard = ({ post }) => {
-    console.log(post);
     return (
         <Card
             key={+post.createdAt}
