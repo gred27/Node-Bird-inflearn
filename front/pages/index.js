@@ -6,6 +6,7 @@ import { loginAction, logoutAction } from "../reducers/user";
 
 const Home = () => {
     // redux state hook으로 가져오기
+    // 렌더링 되는것 확인하면서 성능 최적화를 위해 잘게 쪼개기
     const { isLoggedIn, user } = useSelector((state) => state.user);
     const { mainPosts } = useSelector((state) => state.post);
     console.log("user", user);

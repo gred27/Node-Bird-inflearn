@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Checkbox, Button } from "antd";
-import { signUpAction } from "../reducers/user";
 import { useDispatch } from "react-redux";
 
 const TextInput = ({ value }) => {
