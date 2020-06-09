@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { useInput } from "../pages/signup"; // TODO: util 폴더로 옮기기
 import { LOG_IN_REQUEST } from "../reducers/user";
+import { css, jsx } from "@emotion/core";
 
 const LoginForm = () => {
     const [id, onChangeId] = useInput("");
@@ -26,7 +27,11 @@ const LoginForm = () => {
     );
 
     return (
-        <Form onSubmit={onSubmitForm} style={{ padding: "10px" }}>
+        <Form
+            onSubmit={onSubmitForm}
+            css={css`
+                padding: 10px;
+            `}>
             <div>
                 <label htmlFor='user-id'>아이디</label>
                 <br />
@@ -43,7 +48,10 @@ const LoginForm = () => {
                     required
                 />
             </div>
-            <div style={{ marginTop: "10px" }}>
+            <div
+                css={css`
+                    margin-top: 10px;
+                `}>
                 <Button type='primary' htmlType='submit' loading={isLoggingIn}>
                     로그인
                 </Button>

@@ -4,6 +4,11 @@ import PropTypes from "prop-types";
 import { Menu, Input, Row, Col, Card, Avatar } from "antd";
 import LoginForm from "./LoginForm";
 import { useSelector } from "react-redux";
+import styled from "@emotion/styled";
+
+const SerachInput = styled(Input.Search)`
+    vertical-align: middle;
+`;
 
 const AppLayout = ({ children }) => {
     const { isLoggedIn } = useSelector((state) => state.user);
@@ -21,7 +26,7 @@ const AppLayout = ({ children }) => {
                     </Link>
                 </Menu.Item>
                 <Menu.Item key='mail'>
-                    <Input.Search enterButton style={{ verticalAlign: "middle" }}></Input.Search>
+                    <SerachInput enterButton></SerachInput>
                 </Menu.Item>
             </Menu>
             <Row gutter={10}>

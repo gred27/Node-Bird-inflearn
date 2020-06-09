@@ -5,6 +5,11 @@
     "main": "index.js",
     "author": "Gred",
     "license": "MIT",
+    "babel": {
+        "presets": [
+            "@emotion/babel-preset-css-prop"
+        ]
+    },
     "scripts": {
         "dev": "npx next",
         "build": "npx next build",
@@ -12,13 +17,18 @@
     },
     "dependencies": {
         "@ant-design/icons": "^4.1.0",
+        "@emotion/babel-preset-css-prop": "^10.0.27",
+        "@emotion/core": "^10.0.28",
+        "@emotion/styled": "^10.0.27",
         "antd": "^4.2.2",
         "axios": "^0.19.2",
-        "next": "^9.4.0",
-        "next-redux-wrapper": "^3.0.0",
+        "babel-plugin-emotion": "^10.0.33",
+        "next": "^9.4.4",
+        "next-redux-wrapper": "^6.0.2",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
         "react-dom": "^16.13.1",
+        "react-emotion": "^10.0.0",
         "react-redux": "^7.2.0",
         "redux": "^4.0.5",
         "redux-saga": "^1.1.3",
