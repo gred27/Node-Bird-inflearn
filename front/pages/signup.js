@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 import { Form, Input, Checkbox, Button } from "antd";
 import { useDispatch } from "react-redux";
+import useInput from "../hooks/useInput";
 
 const TextInput = ({ value }) => {
     return <div>{value}</div>;
@@ -9,15 +10,6 @@ const TextInput = ({ value }) => {
 
 TextInput.propTypes = {
     value: PropTypes.string,
-};
-
-// custom Hook 사용하면
-export const useInput = (initValue = null) => {
-    const [value, setter] = useState(initValue);
-    const handler = useCallback((e) => {
-        setter(e.target.value);
-    });
-    return [value, handler];
 };
 
 const Signup = () => {

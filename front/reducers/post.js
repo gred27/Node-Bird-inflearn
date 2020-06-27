@@ -7,8 +7,40 @@ export const initialState = {
                 nickname: "gred",
             },
             content: "first message",
-            img: "/image/dummy_image.jpg",
-            Comments: [],
+            Images: [
+                {
+                    src: "/image/dummy_image.jpg",
+                    alt: "example1",
+                },
+                {
+                    src: "/image/dummy_image.jpg",
+                    alt: "example2",
+                },
+                {
+                    src: "/image/dummy_image.jpg",
+                    alt: "example3",
+                },
+            ],
+            Comments: [
+                {
+                    User: {
+                        nickname: "nero",
+                    },
+                    content: "test comment1",
+                },
+                {
+                    User: {
+                        nickname: "hero",
+                    },
+                    content: "test comment2",
+                },
+                {
+                    User: {
+                        nickname: "mero",
+                    },
+                    content: "test comment",
+                },
+            ],
         },
     ], // 화면에 보일 포스트들
     imagePaths: [], // 미리보기 이미지 경로
