@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import PostFrom from "../components/PostForm";
+import PostForm from "../components/PostForm";
 import PostCard from "../components/PostCard";
 import { loginAction, logoutAction } from "../reducers/user";
 
@@ -16,7 +16,7 @@ const Home = () => {
         <>
             <div>
                 {user ? <div>로그인 했습니다 : {user.nickname}</div> : <div>로그아웃</div>}
-                {isLoggedIn && <PostFrom />}
+                {isLoggedIn && <PostForm />}
                 {mainPosts.map((c) => {
                     return <PostCard key={c} post={c} />;
                 })}
