@@ -4,6 +4,7 @@ import { StopOutlined } from "@ant-design/icons";
 import NicknameEditForm from "../components/NicknameEditForm";
 
 const Profile = () => {
+    const { me } = useSelector((state) => state.user);
     return (
         <>
             <NicknameEditForm />

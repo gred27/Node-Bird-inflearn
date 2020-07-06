@@ -13,7 +13,7 @@ TextInput.propTypes = {
 };
 
 const Signup = () => {
-    // const [id, setId] = useState("");
+    // const [email, setemail] = useState("");
     // const [nick, setNick] = useState("");
     // const [password, setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
@@ -21,7 +21,7 @@ const Signup = () => {
     const [passwordError, setPasswordError] = useState(false);
     const [termError, setTermError] = useState(false);
 
-    const [id, onChangeId] = useInput("");
+    const [email, onChangeEmail] = useInput("");
     const [nick, onChangeNick] = useInput("");
     const [password, onChangePassword] = useInput("");
 
@@ -30,7 +30,7 @@ const Signup = () => {
     const onSubmit = useCallback(
         (e) => {
             console.log({
-                id,
+                email,
                 nick,
                 password,
                 passwordCheck,
@@ -47,7 +47,7 @@ const Signup = () => {
 
             dispatch(
                 signUpAction({
-                    id,
+                    email,
                     password,
                     nick,
                 })
@@ -56,8 +56,8 @@ const Signup = () => {
         [password, passwordCheck, term]
     );
 
-    // const onChangeId = (e) => {
-    //     setId(e.target.value);
+    // const onChangeEmail = (e) => {
+    //     setemail(e.target.value);
     // };
     // const onChangeNick = (e) => {
     //     setNick(e.target.value);
@@ -87,9 +87,14 @@ const Signup = () => {
             <Form onFinish={onSubmit} style={{ padding: 10 }}>
                 <TextInput value={"135"}></TextInput>
                 <div>
-                    <label htmlFor='user-id'>아이디</label>
+                    <label htmlFor='user-email'>이메일</label>
                     <br />
-                    <Input name='user-id' required value={id} onChange={onChangeId}></Input>
+                    <Input
+                        name='user-email'
+                        type='email'
+                        required
+                        value={email}
+                        onChange={onChangeEmail}></Input>
                 </div>
                 <div>
                     <label htmlFor='user-nick'>닉네임</label>
@@ -126,7 +131,7 @@ const Signup = () => {
                     {termError && <div style={{ color: "red" }}>약관에 동의하셔야 합니다.</div>}
                 </div>
                 <div style={{ marginTop: 10 }}>
-                    <Button type='primary' htmlType='submit'>
+                    <Button type='primary' htmlType='submit' loading={signupLoading}>
                         가입하기
                     </Button>
                 </div>
