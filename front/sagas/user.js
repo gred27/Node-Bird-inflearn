@@ -72,7 +72,7 @@ function* login(action) {
 }
 
 function* watchLogin() {
-  yield takeLatest(LOG_IN_REQUEST);
+  yield takeLatest(LOG_IN_REQUEST, login);
 }
 
 // Logout

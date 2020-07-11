@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Menu, Input, Row, Col } from 'antd';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import UserProfile from './UserProfile';
 import LoginForm from './LoginForm';
 
 const SerachInput = styled(Input.Search)`
@@ -11,7 +12,7 @@ const SerachInput = styled(Input.Search)`
 `;
 
 const AppLayout = ({ children }) => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { me } = useSelector((state) => state.user);
   return (
     <div>
       <Menu mode='horizontal'>
@@ -31,15 +32,15 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={10}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? <UserProfile /> : <LoginForm />}
+          {me ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
         </Col>
         <Col xs={24} md={6}>
-          <Link href=''>
-            <a target='_blank'>github. gred27</a>
-          </Link>
+          <a href='https://github.com/gred27' target='_blank' rel='noreferrer noopener'>
+            github. gred27
+          </a>
         </Col>
       </Row>
     </div>
@@ -47,6 +48,6 @@ const AppLayout = ({ children }) => {
 };
 
 AppLayout.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
 export default AppLayout;

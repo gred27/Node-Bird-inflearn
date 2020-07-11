@@ -1,12 +1,13 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
-  const { imagePaths } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { imagePaths, addPostDone } = useSelector((state) => state.post);
   const [text, setText] = useState('');
+  const dispatch = useDispatch();
+  const imageInput = useRef();
 
   useEffect(() => {
     if (addPostDone) {
@@ -42,7 +43,7 @@ const PostForm = () => {
         </Button>
       </div>
       <div>
-        {imagePaths.map((v, i) => (
+        {imagePaths.map((v) => (
           <div key={v} style={{ display: 'inline-block' }}>
             <img src={`http://localhost:3000/${v}`} style={{ width: 200, height: 200 }} alt={v} />
             <div>

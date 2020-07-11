@@ -2,36 +2,37 @@ import React, { useCallback } from 'react';
 import { Button, Form, Input } from 'antd';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
 import useInput from '../hooks/useInput'; // TODO: util 폴더로 옮기기
 import { LOG_IN_REQUEST } from '../reducers/user';
-import { css, jsx } from '@emotion/core';
+
+const ButtonWrapper = styled.div`
+  margin-top: 10px;
+`;
+
+const FormWrapper = styled(Form)`
+  padding: 10px;
+`;
 
 const LoginForm = () => {
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
-  const { isLoggingIn } = useSelector((state) => state.user);
+  const { logInLoading } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const onSubmitForm = useCallback(
-    (e) => {
-      e.preventDefault();
-      dispatch({
-        type: LOG_IN_REQUEST,
-        data: {
-          email,
-          password,
-        },
-      });
-    },
-    [email, password]
-  );
+  const onSubmitForm = useCallback(() => {
+    dispatch({
+      type: LOG_IN_REQUEST,
+      data: {
+        email,
+        password,
+      },
+    });
+  }, [email, password]);
 
   return (
-    <Form
-      onSubmit={onSubmitForm}
-      css={css`
-        padding: 10px;
-      `}>
+    <FormWrapper onFinish={onSubmitForm}>
       <div>
         <label htmlFor='user-email'>아이디</label>
         <br />
@@ -48,11 +49,8 @@ const LoginForm = () => {
           required
         />
       </div>
-      <div
-        css={css`
-          margin-top: 10px;
-        `}>
-        <Button type='primary' htmlType='submit' loading={isLoggingIn}>
+      <ButtonWrapper>
+        <Button type='primary' htmlType='submit' loading={logInLoading}>
           로그인
         </Button>
         <Link href='/signup'>
@@ -60,8 +58,8 @@ const LoginForm = () => {
             <Button>회원가입</Button>
           </a>
         </Link>
-      </div>
-    </Form>
+      </ButtonWrapper>
+    </FormWrapper>
   );
 };
 
