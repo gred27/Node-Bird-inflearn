@@ -1,9 +1,9 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React, { useState, useCallback } from 'react';
 import { Card, Avatar, Popover, Button, List, Comment } from 'antd';
 import PropTypes from 'prop-types';
-import CommentForm from './CommentForm';
-import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
+import { useSelector } from 'react-redux';
 import {
   RetweetOutlined,
   HeartOutlined,
@@ -12,6 +12,7 @@ import {
   HeartTwoTone,
 } from '@ant-design/icons';
 import PostImages from './PostImage';
+import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 
 const CardWrapper = styled.div`
@@ -92,11 +93,12 @@ const PostCard = ({ post }) => {
 };
 PostCard.propTypes = {
   post: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     User: PropTypes.object,
     content: PropTypes.string,
     img: PropTypes.string,
     createdAt: PropTypes.object,
+    PostImages: PropTypes.array,
   }),
 };
 export default PostCard;

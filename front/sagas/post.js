@@ -27,7 +27,7 @@ function* addPost(action) {
     // api 만들기 전 임시로 delay.
     // const result = yield call(addPostAPI, action.data);
     yield delay(1000);
-
+    console.log('action', action);
     const id = shortId.generate();
     yield put({
       type: ADD_POST_SUCCESS,

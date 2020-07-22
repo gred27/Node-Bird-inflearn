@@ -4,6 +4,7 @@ import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { loginAction, logoutAction } from '../reducers/user';
+import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 
 const Home = () => {
   // redux state hook으로 가져오기
@@ -15,11 +16,17 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch({
+      type: LOAD_MAIN_POSTS_REQUEST,
+    });
+  }, []);
+
   return (
     <AppLayout>
       {me && <PostForm />}
       {mainPosts.map((c) => {
-        return <PostCard key={c} post={c} />;
+        return <PostCard key={c.id} post={c} />;
       })}
     </AppLayout>
   );

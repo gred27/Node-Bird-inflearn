@@ -3,6 +3,7 @@ import Link from 'next/link';
 import PropTypes from 'prop-types';
 
 const PostCardContent = ({ postData }) => {
+  console.log(postData);
   return (
     <div>
       {postData.split(/(#[^\s#]+)/g).map((v, i) => {
@@ -17,6 +18,10 @@ const PostCardContent = ({ postData }) => {
       })}
     </div>
   );
+};
+
+PostCardContent.propTypes = {
+  postData: PropTypes.string.isRequired,
 };
 
 export default PostCardContent;
