@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import React, { useCallback } from 'react';
 import useInput from '../hooks/useInput';
+import { ADD_COMMENT_REQUEST } from '../reducers/post';
 
 const CommentForm = ({ post }) => {
-  const id = useSelector((state) => state.id);
+  const id = useSelector(state => state.id);
   const [commentText, onChangeCommentText] = useInput('');
 
   const onSubmitComment = useCallback(() => {
@@ -19,8 +20,12 @@ const CommentForm = ({ post }) => {
   return (
     <Form onFinish={onSubmitComment}>
       <Form.Item>
-        <Input.TextArea value={commentText} onChange={onChangeCommentText} rows={4} />
-        <Button type='primary' htmlType='submit'>
+        <Input.TextArea
+          value={commentText}
+          onChange={onChangeCommentText}
+          rows={4}
+        />
+        <Button type="primary" htmlType="submit">
           Twit
         </Button>
       </Form.Item>

@@ -20,17 +20,17 @@ const CardWrapper = styled.div`
 `;
 
 const PostCard = ({ post }) => {
-  const { me } = useSelector((state) => state.user);
+  const { me } = useSelector(state => state.user);
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const [liked, setLiked] = useState(false);
   const id = me && me.id;
 
   const onToggleLike = useCallback(() => {
-    setLiked((prev) => !prev);
+    setLiked(prev => !prev);
   }, []);
 
   const onToggleComment = useCallback(() => {
-    setCommentFormOpened((prev) => !prev);
+    setCommentFormOpened(prev => !prev);
   }, []);
 
   return (
@@ -38,21 +38,25 @@ const PostCard = ({ post }) => {
       <Card
         cover={post.Images[0] && <PostImages images={post.Images} />}
         actions={[
-          <RetweetOutlined key='retweet' />,
+          <RetweetOutlined key="retweet" />,
           liked ? (
-            <HeartTwoTone twoToneColor='#ff5b59' key='heart' onClick={onToggleLike} />
+            <HeartTwoTone
+              twoToneColor="#ff5b59"
+              key="heart"
+              onClick={onToggleLike}
+            />
           ) : (
-            <HeartOutlined key='heart' onClick={onToggleLike} />
+            <HeartOutlined key="heart" onClick={onToggleLike} />
           ),
-          <MessageOutlined key='message' onClick={onToggleComment} />,
+          <MessageOutlined key="message" onClick={onToggleComment} />,
           <Popover
-            key='more'
+            key="more"
             content={
               <Button.Group>
                 {id && post.User.id === id ? (
                   <>
                     <Button>Edit</Button>
-                    <Button type='danger'>Delete</Button>
+                    <Button type="danger">Delete</Button>
                   </>
                 ) : (
                   <Button>Report</Button>
@@ -60,9 +64,10 @@ const PostCard = ({ post }) => {
               </Button.Group>
             }
           />,
-          <EllipsisOutlined key='ellipsis' />,
+          <EllipsisOutlined key="ellipsis" />,
         ]}
-        extra={''}>
+        extra=""
+      >
         <Card.Meta
           avatar={<Avatar>{post.User.nickname[0]}</Avatar>}
           title={post.User.nickname}
@@ -74,9 +79,9 @@ const PostCard = ({ post }) => {
           <CommentForm post={post} />
           <List
             header={`${post.Comments.length}개의 댓글`}
-            itemLayout='horizontal'
+            itemLayout="horizontal"
             dataSource={post.Comments}
-            renderItem={(item) => (
+            renderItem={item => (
               <li>
                 <Comment
                   author={item.User.nickname}

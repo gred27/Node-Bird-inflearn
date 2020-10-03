@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import produce from 'immer';
 
-const dummyUser = (data) => ({
+const dummyUser = data => ({
   ...data,
   nickname: 'gred',
   Post: [],
@@ -106,18 +106,18 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 //     };
 // };
 
-export const loginRequestAction = (data) => ({
+export const loginRequestAction = data => ({
   type: LOG_IN_REQUEST,
   data,
 });
 
-export const logoutRequestAction = (data) => ({
+export const logoutRequestAction = data => ({
   type: LOG_OUT_REQUEST,
   data,
 });
 
 const reducer = (state = initialState, action) =>
-  produce(state, (draft) => {
+  produce(state, draft => {
     switch (action.type) {
       case FOLLOW_USER_REQUEST:
         draft.followLoading = true;
@@ -140,7 +140,9 @@ const reducer = (state = initialState, action) =>
         break;
       case UNFOLLOW_USER_SUCCESS:
         draft.unfollowLoading = false;
-        draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data);
+        draft.me.Followings = draft.me.Followings.filter(
+          v => v.id !== action.data,
+        );
         draft.unfollowDone = true;
         break;
       case UNFOLLOW_USER_FAILURE:
@@ -153,7 +155,6 @@ const reducer = (state = initialState, action) =>
         draft.logInDone = false;
         break;
       case LOG_IN_SUCCESS:
-        console.log('success');
         draft.logInLoading = false;
         draft.me = dummyUser(action.data);
         draft.logInDone = true;
@@ -206,7 +207,7 @@ const reducer = (state = initialState, action) =>
         draft.me.Posts.unshift({ id: action.data });
         break;
       case REMOVE_POST_OF_ME:
-        draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data);
+        draft.me.Posts = draft.me.Posts.filter(v => v.id !== action.data);
         break;
       default:
         break;

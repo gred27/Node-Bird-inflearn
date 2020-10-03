@@ -4,7 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ADD_POST_REQUEST } from '../reducers/post';
 
 const PostForm = () => {
-  const { imagePaths, addPostDone, addPostLoading } = useSelector((state) => state.post);
+  const { imagePaths, addPostDone, addPostLoading } = useSelector(
+    state => state.post,
+  );
   const [text, setText] = useState('');
   const dispatch = useDispatch();
   const imageInput = useRef();
@@ -16,7 +18,7 @@ const PostForm = () => {
     }
   }, [addPostDone]);
 
-  const onChangeText = useCallback((e) => {
+  const onChangeText = useCallback(e => {
     console.log(e.target.value);
     setText(e.target.value);
     console.log('text', text);
@@ -37,28 +39,37 @@ const PostForm = () => {
   }, [text]);
 
   return (
-    <Form style={{ margin: '10px 0 20px' }} encType='multipart/form-data' onFinish={onSubmitForm}>
+    <Form
+      style={{ margin: '10px 0 20px' }}
+      encType="multipart/form-data"
+      onFinish={onSubmitForm}
+    >
       <Input.TextArea
         value={text}
         onChange={onChangeText}
         maxLength={140}
-        placeholder='Have a Good Day?'
+        placeholder="Have a Good Day?"
       />
       <div>
-        <input type='file' multiple hidden ref={imageInput} />
+        <input type="file" multiple hidden ref={imageInput} />
         <Button onClick={onClickImageUpload}>Image Upload</Button>
         <Button
-          type='primary'
+          type="primary"
           style={{ float: 'right' }}
-          htmlType='submit'
-          loading={addPostLoading}>
+          htmlType="submit"
+          loading={addPostLoading}
+        >
           끅끅
         </Button>
       </div>
       <div>
-        {imagePaths.map((v) => (
+        {imagePaths.map(v => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img src={`http://localhost:3000/${v}`} style={{ width: 200, height: 200 }} alt={v} />
+            <img
+              src={`http://localhost:3000/${v}`}
+              style={{ width: 200, height: 200 }}
+              alt={v}
+            />
             <div>
               <Button>delete</Button>
             </div>

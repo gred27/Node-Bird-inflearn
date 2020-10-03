@@ -1,4 +1,3 @@
-/* eslint-disable no-param-reassign */
 import shortId from 'shortid';
 import produce from 'immer';
 import faker from 'faker';
@@ -24,7 +23,7 @@ export const initialState = {
   addCommentsError: null, // 댓글 업로드 실패 사유
 };
 
-export const generateDummyPost = (num) =>
+export const generateDummyPost = num =>
   Array(num)
     .fill()
     .map(() => ({
@@ -98,17 +97,17 @@ export const REMOVE_POST_SUCCESS = 'REMOVE_POST_SUCCESS';
 export const REMOVE_POST_FAILURE = 'REMOVE_POST_FAILURE';
 
 // action state
-export const addPost = (data) => ({
+export const addPost = data => ({
   type: ADD_POST_REQUEST,
   data,
 });
 
-export const addComment = (data) => ({
+export const addComment = data => ({
   type: ADD_COMMENT_REQUEST,
   data,
 });
 
-const dummyPost = (data) => ({
+const dummyPost = data => ({
   id: data.id,
   content: data.content,
   User: {
@@ -119,7 +118,7 @@ const dummyPost = (data) => ({
   Comments: [],
 });
 
-const dummyComment = (data) => ({
+const dummyComment = data => ({
   id: shortId.generate(),
   content: data,
   User: {
@@ -129,7 +128,7 @@ const dummyComment = (data) => ({
 });
 
 const reducer = (state = initialState, action) =>
-  produce(state, (draft) => {
+  produce(state, draft => {
     switch (action.type) {
       case LOAD_MAIN_POSTS_REQUEST:
         draft.loadPostsLoading = true;
@@ -168,7 +167,7 @@ const reducer = (state = initialState, action) =>
       case REMOVE_POST_SUCCESS:
         draft.removePostLoading = false;
         draft.removePostDone = true;
-        draft.mainPosts = draft.mainPosts.filter((v) => v.id !== action.data);
+        draft.mainPosts = draft.mainPosts.filter(v => v.id !== action.data);
         break;
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
@@ -180,7 +179,7 @@ const reducer = (state = initialState, action) =>
         draft.addCommentError = null;
         break;
       case ADD_COMMENT_SUCCESS: {
-        const post = draft.mainPosts.find((v) => v.id === action.data.postId);
+        const post = draft.mainPosts.find(v => v.id === action.data.postId);
         post.Comments.unshift(dummyComment(action.data.content));
         draft.addCommentLoading = false;
         draft.addCommentDone = true;

@@ -6,7 +6,7 @@ import reducer from '../reducers';
 import rootSaga from '../sagas';
 
 // store = action + state
-const configureStore = (context) => {
+const configureStore = context => {
   console.log('store', context);
   const sagaMiddleware = createSagaMiddleware();
   const middlewares = [sagaMiddleware];
@@ -19,6 +19,8 @@ const configureStore = (context) => {
   return store;
 };
 
-const wrapper = createWrapper(configureStore, { debug: process.env.NODE_ENV === 'development' });
+const wrapper = createWrapper(configureStore, {
+  debug: process.env.NODE_ENV === 'development',
+});
 
 export default wrapper;
