@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button } from 'antd';
 import { useDispatch } from 'react-redux';
 import useInput from '../hooks/useInput';
+import { signUpAction } from '../reducers/user';
 
 const TextInput = ({ value }) => <div>{value}</div>;
 

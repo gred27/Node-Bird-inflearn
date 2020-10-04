@@ -99,12 +99,12 @@ export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 // };
 
 // 동적데이터는 함수를 만들어서 사용
-// export const signUpAction = (data) => {
-//     return {
-//         type: SIGN_UP,
-//         data: data,
-//     };
-// };
+export const signUpAction = data => {
+  return {
+    type: SIGN_UP_REQUEST,
+    data,
+  };
+};
 
 export const loginRequestAction = data => ({
   type: LOG_IN_REQUEST,
