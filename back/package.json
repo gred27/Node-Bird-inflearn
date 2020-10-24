@@ -1,0 +1,13 @@
+{
+  "name": "react-nodebird-back",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "gred",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.11.0"
+  }
+}
