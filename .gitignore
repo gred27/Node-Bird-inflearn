@@ -121,4 +121,8 @@ psd
 thumb
 sketch
 
+back/config/
+.vscode
+
 # End of https://www.gitignore.io/api/node,react
+
