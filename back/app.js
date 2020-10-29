@@ -10,10 +10,17 @@
 //     console.log('server build')
 // });
 
-const express = require("express");
-const postRouter = require("./routes/post");
+const express = require('express');
+const postRouter = require('./routes/post');
+const db = require('./models');
 const app = express();
 
+db.sequelize
+    .sync()
+    .then(() => {
+        console.log('db 연결성공');
+    })
+    .catch(console.error);
 /*
   app.get =>가져오기
   app.post => 생성
@@ -26,19 +33,19 @@ const app = express();
 
 /* api 문서는 swagger 자동생성*/
 
-app.use("/post", postRouter);
-app.get("/", (req, res) => {
-    res.send("hello express");
+app.use('/post', postRouter);
+app.get('/', (req, res) => {
+    res.send('hello express');
 });
 
 app.listen(3065, () => {
-    console.log("server start");
+    console.log('server start');
 });
 
-app.get("/api/posts", (req, res) => {
+app.get('/api/posts', (req, res) => {
     res.json([
-        { id: 1, content: "hello" },
-        { id: 2, content: "hello1" },
-        { id: 3, content: "hello2" },
+        { id: 1, content: 'hello' },
+        { id: 2, content: 'hello1' },
+        { id: 3, content: 'hello2' },
     ]);
 });
