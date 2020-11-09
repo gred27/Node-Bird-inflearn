@@ -21,14 +21,15 @@ import {
 // fork는 비동기 함수 호출
 // call은 동기 함수호출
 
-function signUpAPI() {
-  return axios.post('/api/signUp');
+const apiUrl = 'http://localhost:3065';
+function signUpAPI(data) {
+  return axios.post(`${apiUrl}/user`, data);
 }
 
 function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI, action.data);
-    yield delay(2000);
+    const result = yield call(signUpAPI, action.data);
+    console.log('signup', result);
     yield put({
       // put은 dispatch와 동일
       type: SIGN_UP_SUCCESS,

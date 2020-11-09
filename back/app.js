@@ -12,6 +12,7 @@
 
 const express = require('express');
 const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const db = require('./models');
 const app = express();
 
@@ -31,9 +32,17 @@ db.sequelize
   app.head => head만 가져옴  
 */
 
-/* api 문서는 swagger 자동생성*/
+/* 
+ use 안에 들어가는 express middleware
+ data를 req.body안에 넣어줌. 위치는 위쪽에
+*/
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+/* api 문서는 swagger 자동생성 */
 
 app.use('/post', postRouter);
+app.use('/user', userRouter);
 app.get('/', (req, res) => {
     res.send('hello express');
 });
