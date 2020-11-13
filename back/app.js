@@ -11,6 +11,7 @@
 // });
 
 const express = require('express');
+const cors = require('cors');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
@@ -36,6 +37,11 @@ db.sequelize
  use 안에 들어가는 express middleware
  data를 req.body안에 넣어줌. 위치는 위쪽에
 */
+app.use(
+    cors({
+        origin: true,
+    }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
