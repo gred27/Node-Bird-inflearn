@@ -21,9 +21,8 @@ import {
 // fork는 비동기 함수 호출
 // call은 동기 함수호출
 
-const apiUrl = 'http://localhost:3065';
 function signUpAPI(data) {
-  return axios.post(`${apiUrl}/user`, data);
+  return axios.post(`/user`, data);
 }
 
 function* signUp(action) {
@@ -51,17 +50,16 @@ function* watchSignUp() {
 
 // Login
 function loginAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post(`/user/login`, data);
 }
 
 function* login(action) {
   try {
     console.log(action);
-    // const result = yield call(loginAPI, action.data);
-    yield delay(2000);
+    const result = yield call(loginAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
       //   data: result.data,
     });
   } catch (error) {
@@ -79,7 +77,7 @@ function* watchLogin() {
 
 // Logout
 function logoutAPI(data) {
-  return axios.post('/api/logout', data);
+  return axios.post('/user/logout', data);
 }
 
 function* logout(action) {
