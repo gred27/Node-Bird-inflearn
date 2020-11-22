@@ -36,6 +36,7 @@
     "react-emotion": "^10.0.0",
     "react-redux": "^7.2.0",
     "react-slick": "^0.26.1",
+    "react-uid": "^2.3.0",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.1.3",

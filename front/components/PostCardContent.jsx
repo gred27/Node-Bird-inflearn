@@ -1,15 +1,15 @@
 import React from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
+import { uid } from 'react-uid';
 
 const PostCardContent = ({ postData }) => {
-  console.log(postData);
   return (
     <div>
       {postData.split(/(#[^\s#]+)/g).map((v, i) => {
         if (v.match(/(#[^\s#]+)/g)) {
           return (
-            <Link href={`/hashtag/${v.slice(1)}`} key={i}>
+            <Link href={`/hashtag/${v.slice(1)}`} key={uid(v)}>
               <a>{v}</a>
             </Link>
           );
