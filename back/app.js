@@ -12,12 +12,20 @@
 
 const express = require('express');
 const cors = require('cors');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const dotenv = require('dotenv');
+
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const db = require('./models');
 const passportConfig = require('./passport');
+const { param } = require('./routes/post');
+
 const app = express();
 
+dotenv.config();
 passportConfig();
 
 db.sequelize
@@ -45,9 +53,19 @@ app.use(
         origin: true,
     }),
 );
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cookieParser('nodebirdsecret'));
+app.use(
+    session({
+        saveUninitialized: false,
+        resave: false,
+        secret: process.env.COOKIE_SECRET,
+    }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
 /* api 문서는 swagger 자동생성 */
 
 app.use('/post', postRouter);
