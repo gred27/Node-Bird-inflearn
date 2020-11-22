@@ -1,12 +1,13 @@
 const express = require('express');
 const { User } = require('../models');
 const passport = require('passport');
-
+const bcrypt = require('bcrypt');
 const router = express.Router();
 
 // login 전략 실행 + 미들웨어 확장 (req, res, next) 사용하기
 router.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
+        console.log(user);
         if (err) {
             console.error(err);
             return next(err);

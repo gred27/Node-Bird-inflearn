@@ -22,7 +22,7 @@ const Signup = () => {
   const [termError, setTermError] = useState(false);
 
   const [email, onChangeEmail] = useInput('');
-  const [nick, onChangeNick] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
 
   const { signupLoading, signUpDone, signUpError } = useSelector(
@@ -46,7 +46,7 @@ const Signup = () => {
     e => {
       console.log({
         email,
-        nick,
+        nickname,
         password,
         passwordCheck,
         term,
@@ -64,7 +64,7 @@ const Signup = () => {
         signUpAction({
           email,
           password,
-          nick,
+          nickname,
         }),
       );
     },
@@ -118,8 +118,8 @@ const Signup = () => {
           <Input
             name="user-nick"
             required
-            value={nick}
-            onChange={onChangeNick}
+            value={nickname}
+            onChange={onChangeNickname}
           />
         </div>
         <div>

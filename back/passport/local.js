@@ -21,7 +21,7 @@ module.exports = () => {
                     }
 
                     // 비밀번호 검사
-                    const reuslt = await bcrypt.compare(password, user.password);
+                    const result = await bcrypt.compare(password, user.password);
                     if (result) {
                         return done(null, user);
                     }
