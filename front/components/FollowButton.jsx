@@ -31,7 +31,7 @@ const FollowButton = ({ post }) => {
   );
 };
 
-FollowButton.prototype = {
+FollowButton.propTypes = {
   post: PropTypes.shape.isRequired,
 };
 

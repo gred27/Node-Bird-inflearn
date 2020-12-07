@@ -1,11 +1,12 @@
 const express = require('express');
 const { User } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 
 // login 전략 실행 + 미들웨어 확장 (req, res, next) 사용하기
-router.post('/login', (req, res, next) => {
+router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
         console.log(user);
         if (err) {
@@ -25,6 +26,12 @@ router.post('/login', (req, res, next) => {
             return res.status(200).json(user);
         });
     })(req, res, next);
+});
+
+router.post('/logout', isLoggedIn, (req, res) => {
+    req.logout();
+    req.session.destroy();
+    res.send('ok');
 });
 
 // 응답 두번 보내면 에러

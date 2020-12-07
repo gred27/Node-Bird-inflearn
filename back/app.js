@@ -51,6 +51,7 @@ db.sequelize
 app.use(
     cors({
         origin: true,
+        credentials: true, // 쿠키공유설정
     }),
 );
 

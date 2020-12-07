@@ -25,11 +25,16 @@ const Signup = () => {
   const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
 
-  const { signupLoading, signUpDone, signUpError } = useSelector(
+  const { signupLoading, signUpDone, signUpError, me } = useSelector(
     state => state.user,
   );
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  });
   useEffect(() => {
     if (signUpDone) {
       Router.push('/');
@@ -38,6 +43,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (signUpError) {
+      // eslint-disable-next-line no-alert
       alert(signUpError);
     }
   }, [signUpError]);
