@@ -21,6 +21,14 @@ export const initialState = {
   addCommentsLoading: false, // 댓글 업로드 중
   addCommentsDone: false, // 댓글 업로드 성공
   addCommentsError: null, // 댓글 업로드 실패 사유
+
+  likePostLoading: false, // 댓글 업로드 중
+  likePostDone: false, // 댓글 업로드 성공
+  likePostError: null, // 댓글 업로드 실패 사유
+
+  unlikePostLoading: false, // 댓글 업로드 중
+  unlikePostDone: false, // 댓글 업로드 성공
+  unlikePostError: null, // 댓글 업로드 실패 사유
 };
 
 export const generateDummyPost = num =>
@@ -188,6 +196,38 @@ const reducer = (state = initialState, action) =>
       case ADD_COMMENT_FAILURE:
         draft.addCommentLoading = false;
         draft.addCommentError = action.error;
+        break;
+      case LIKE_POST_REQUEST:
+        draft.likePostLoading = true;
+        draft.likePostDone = false;
+        draft.likePostError = null;
+        break;
+      case LIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find(v => v.id === action.data.PostId);
+        post.Likers.push({ id: action.data.UserId });
+        draft.likePostLoading = false;
+        draft.likePostDone = true;
+        break;
+      }
+      case LIKE_POST_FAILURE:
+        draft.likePostLoading = false;
+        draft.likePostError = action.error;
+        break;
+      case UNLIKE_POST_REQUEST:
+        draft.unlikeLoading = true;
+        draft.unlikeDone = false;
+        draft.unlikeError = null;
+        break;
+      case UNLIKE_POST_SUCCESS: {
+        const post = draft.mainPosts.find(v => v.id === action.data.PostId);
+        post.Likers.filter(v => v.id !== action.data.UserId);
+        draft.unlikeLoading = false;
+        draft.unlikeDone = true;
+        break;
+      }
+      case UNLIKE_POST_FAILURE:
+        draft.unlikeLoading = false;
+        draft.unlikeError = action.error;
         break;
       default:
         break;

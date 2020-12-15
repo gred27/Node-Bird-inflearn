@@ -75,13 +75,14 @@ app.use(passport.session());
 app.user('/posts', postsRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
-app.get('/', (req, res) => {
-    res.send('hello express');
-});
 
 app.listen(3065, () => {
     console.log('server start');
 });
+
+// app.get('/', (req, res) => {
+//     res.send('hello express');
+// });
 
 // app.get('/api/posts', (req, res) => {
 //     res.json([

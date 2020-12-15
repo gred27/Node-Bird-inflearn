@@ -14,6 +14,12 @@ import {
   LOAD_MAIN_POSTS_FAILURE,
   ADD_COMMENT_SUCCESS,
   ADD_COMMENT_FAILURE,
+  LIKE_POST_FAILURE,
+  LIKE_POST_REQUEST,
+  LIKE_POST_SUCCESS,
+  UNLIKE_POST_FAILURE,
+  UNLIKE_POST_REQUEST,
+  UNLIKE_POST_SUCCESS,
   generateDummyPost,
 } from '../reducers/post';
 import { REMOVE_POST_OF_ME } from '../reducers/user';
@@ -107,6 +113,46 @@ function* addComment(action) {
   }
 }
 
+function likePostAPI(data) {
+  return axios.post(`/api/post/${data.postId}/like`, data);
+}
+
+function* likePost(action) {
+  try {
+    const result = yield call(likePostAPI, action.data);
+
+    yield put({
+      type: LIKE_POST_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: LIKE_POST_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
+function unlikePostAPI(data) {
+  return axios.post(`/api/post/${data.postId}/unlike`, data);
+}
+
+function* unlikePost(action) {
+  try {
+    const result = yield call(unlikePostAPI, action.data);
+
+    yield put({
+      type: UNLIKE_POST_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UNLIKE_POST_FAILURE,
+      data: err.response.data,
+    });
+  }
+}
+
 function* watchAddPost() {
   yield takeLatest(ADD_POST_REQUEST, addPost);
 }
@@ -123,11 +169,21 @@ function* watchAddComment() {
   yield takeLatest(ADD_COMMENT_REQUEST, addComment);
 }
 
+function* watchLikePost() {
+  yield takeLatest(LIKE_POST_REQUEST, likePost);
+}
+
+function* watchUnLikePost() {
+  yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
+
 export default function* postSaga() {
   yield all([
     fork(watchAddPost),
     fork(watchLoadPosts),
     fork(watchRemovePost),
     fork(watchAddComment),
+    fork(watchUnLikePost),
+    fork(watchLikePost),
   ]);
 }
