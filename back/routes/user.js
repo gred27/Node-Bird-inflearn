@@ -1,9 +1,44 @@
 const express = require('express');
 const { User } = require('../models');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
+
+router.get('/', async (req, res, next) => {
+    try {
+        if (req.user) {
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.user.id },
+                attributes: {
+                    exclude: ['password'],
+                },
+                include: [
+                    {
+                        model: Post,
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Follwings',
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followers',
+                        attributes: ['id'],
+                    },
+                ],
+            });
+
+            res.status(200).json(fullUserWithoutPassword);
+        } else {
+            res.status(200).json(null);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
 
 // login 전략 실행 + 미들웨어 확장 (req, res, next) 사용하기
 router.post('/login', isNotLoggedIn, (req, res, next) => {
@@ -13,7 +48,6 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
             console.error(err);
             return next(err);
         }
-
         if (info) {
             return res.status(401).send(info.reason);
         }
@@ -23,7 +57,26 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
                 console.error(loginErr);
                 return next(loginErr);
             }
-            return res.status(200).json(user);
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: user.id },
+                attributes: {
+                    exclude: ['password'],
+                },
+                include: [
+                    {
+                        model: Post,
+                    },
+                    {
+                        model: User,
+                        as: 'Follwings',
+                    },
+                    {
+                        model: User,
+                        as: 'Followers',
+                    },
+                ],
+            });
+            return res.status(200).json(fullUserWithoutPassword);
         });
     })(req, res, next);
 });

@@ -18,9 +18,16 @@ router.post('/', isLoggedIn, async (req, res, next) => {
                 },
                 {
                     model: Comment,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['id', 'nickname'],
+                        },
+                    ],
                 },
                 {
                     model: User,
+                    attributes: ['id', 'nickname'],
                 },
             ],
         });
@@ -46,7 +53,17 @@ router.post('/:postId/commnet', isLoggedIn, async (req, res, next) => {
             PostId: req.params.postId,
             UserId: req.user.id,
         });
-        res.status(201).json(comment);
+
+        const fullComment = await Comment.findOne({
+            where: { id: comment.id },
+            include: [
+                {
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                },
+            ],
+        });
+        res.status(201).json(fullComment);
     } catch (error) {
         console.error(error);
         next(error);

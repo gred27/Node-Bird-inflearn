@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, put, delay } from 'redux-saga/effects';
+import { call, all, fork, takeLatest, put, delay } from 'redux-saga/effects';
 import axios from 'axios';
 import shortId from 'shortid';
 import {
@@ -25,8 +25,7 @@ function addPostAPI(data) {
 function* addPost(action) {
   try {
     // api 만들기 전 임시로 delay.
-    // const result = yield call(addPostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addPostAPI, action.data);
     console.log('action', action);
     const id = shortId.generate();
     yield put({
@@ -51,8 +50,7 @@ function removePostAPI(data) {
 
 function* removePost(action) {
   try {
-    // const result = yield call(removePostAPI, action.data);
-    yield delay(1000);
+    const result = yield call(removePostAPI, action.data);
     yield put({
       type: REMOVE_POST_SUCCESS,
       data: action.data,
@@ -76,8 +74,7 @@ function loadPostsAPI(data) {
 
 function* loadPosts(action) {
   try {
-    // const result = yield call(loadPostsAPI, action.data);
-    yield delay(1000);
+    const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
       data: generateDummyPost(10),
@@ -96,8 +93,8 @@ function addCommentAPI(data) {
 
 function* addComment(action) {
   try {
-    // const result = yield call(addCommentAPI, action.data);
-    yield delay(1000);
+    const result = yield call(addCommentAPI, action.data);
+
     yield put({
       type: ADD_COMMENT_SUCCESS,
       data: action.data,

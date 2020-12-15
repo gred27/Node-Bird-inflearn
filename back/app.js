@@ -19,6 +19,9 @@ const dotenv = require('dotenv');
 
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
+
+const postsRouter = require('./routes/posts');
+const usersRouter = require('./routes/users');
 const db = require('./models');
 const passportConfig = require('./passport');
 const { param } = require('./routes/post');
@@ -69,6 +72,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 /* api 문서는 swagger 자동생성 */
 
+app.user('/posts', postsRouter);
 app.use('/post', postRouter);
 app.use('/user', userRouter);
 app.get('/', (req, res) => {
@@ -79,10 +83,10 @@ app.listen(3065, () => {
     console.log('server start');
 });
 
-app.get('/api/posts', (req, res) => {
-    res.json([
-        { id: 1, content: 'hello' },
-        { id: 2, content: 'hello1' },
-        { id: 3, content: 'hello2' },
-    ]);
-});
+// app.get('/api/posts', (req, res) => {
+//     res.json([
+//         { id: 1, content: 'hello' },
+//         { id: 2, content: 'hello1' },
+//         { id: 3, content: 'hello2' },
+//     ]);
+// });

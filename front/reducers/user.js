@@ -37,6 +37,10 @@ export const initialState = {
   changeNicknameDone: false,
   changeNicknameError: null,
 
+  loadMyInfoLoading: false, // 닉네임 변경 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
+
   me: null, // 내 정보
   userInfo: null, // 남의 정보
 
@@ -74,6 +78,10 @@ export const LOAD_FOLLOW_FAILURE = 'LOAD_FOLLOW_FAILURE';
 export const FOLLOW_USER_REQUEST = 'FOLLOW_USER_REQUEST';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const FOLLOW_USER_FAILURE = 'FOLLOW_USER_FAILURE';
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
 export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
@@ -119,6 +127,20 @@ export const logoutRequestAction = data => ({
 const reducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoError = null;
+        draft.loadMyInfoDone = false;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
+        draft.me.loadMyInfoings.push({ id: action.data });
+        draft.loadMyInfoDone = true;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = action.error;
+        break;
       case FOLLOW_USER_REQUEST:
         draft.followLoading = true;
         draft.followError = null;

@@ -4,8 +4,8 @@ import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
-  SIGN_UP_REQUEST,
   SIGN_UP_FAILURE,
+  SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   LOG_OUT_REQUEST,
   LOG_OUT_FAILURE,
@@ -16,11 +16,17 @@ import {
   UNFOLLOW_USER_REQUEST,
   UNFOLLOW_USER_SUCCESS,
   UNFOLLOW_USER_FAILURE,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
 } from '../reducers/user';
 
 // fork는 비동기 함수 호출
 // call은 동기 함수호출
 
+// ============================================
+// Sign up API
+// ============================================
 function signUpAPI(data) {
   return axios.post(`/user`, data);
 }
@@ -48,7 +54,10 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-// Login
+// ============================================
+// Login API
+// ============================================
+
 function loginAPI(data) {
   return axios.post(`/user/login`, data);
 }
@@ -74,8 +83,9 @@ function* login(action) {
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, login);
 }
-
+// ============================================
 // Logout
+// ============================================
 function logoutAPI(data) {
   return axios.post('/user/logout', data);
 }
@@ -101,6 +111,37 @@ function* watchLogout() {
   yield takeLatest(LOG_OUT_REQUEST, logout);
 }
 
+// ============================================
+// Load My Info
+// ============================================
+function loadMyInfoAPI() {
+  return axios.get('/user');
+}
+
+function* loadMyInfo(action) {
+  try {
+    // const result = yield call(followAPI);
+    yield delay(1000);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
+
+// ============================================
+// Follow
+// ============================================
 function followAPI() {
   return axios.post('/api/follow');
 }
@@ -126,6 +167,9 @@ function* watchFollow() {
   yield takeLatest(FOLLOW_USER_REQUEST, follow);
 }
 
+// ============================================
+// Unfollow
+// ============================================
 function unfollowAPI() {
   return axios.post('/api/unfollow');
 }
@@ -158,5 +202,6 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchLogin),
     fork(watchLogout),
+    fork(watchLoadMyInfo),
   ]);
 }
