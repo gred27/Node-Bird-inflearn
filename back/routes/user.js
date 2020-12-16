@@ -87,6 +87,87 @@ router.post('/logout', isLoggedIn, (req, res) => {
     res.send('ok');
 });
 
+// 닉네임 수정
+router.patch('/nickname', isLoggedIn, async (req, res, next) => {
+    try {
+        await User.update(
+            {
+                nikcname: req.body.nickname,
+            },
+            {
+                where: { id: req.user.id },
+            },
+        );
+        res.status(200).json({ nickanme: req.body.nickname });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// follow
+router.patch('/:userId/follow', isLoggedIn, async (req, res, next) => {
+    // PATCH /user/1/follow
+    try {
+        const user = await User.findOne({ where: { id: req.params.UserId } });
+        if (!user) {
+            return res.status(404).send('없는 사람입니다.');
+        }
+        await user.addFollowers(req.user.id);
+        res.status(200).json({ id: parseInt(req.params.UserId) });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// unfollow
+router.delete('/nickname', isLoggedIn, async (req, res, next) => {
+    try {
+        const user = await User.findOne({ where: { id: req.params.UserId } });
+        if (!user) {
+            return res.status(404).send('언팔로우 할 수 없습니다.');
+        }
+        await user.removeFollwers(req.user.id);
+        res.status(200).json({ id: parseInt(req.params.UserId) });
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// followers
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+    // PATCH /user/1/follow
+    try {
+        const user = await User.findOne({ where: { id: req.user.id } });
+        if (!user) {
+            return res.status(404).send('없는 사람입니다.');
+        }
+        const followers = await user.getFollowers();
+        res.status(200).json(followers);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+// followings
+router.get('/followers', isLoggedIn, async (req, res, next) => {
+    // PATCH /user/1/follow
+    try {
+        const user = await User.findOne({ where: { id: req.user.id } });
+        if (!user) {
+            return res.status(404).send('없는 사람입니다.');
+        }
+        const followings = await user.getFollowings();
+        res.status(200).json(followings);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 // 응답 두번 보내면 에러
 router.post('/', async (req, res, next) => {
     try {

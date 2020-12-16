@@ -1,15 +1,6 @@
 /* eslint-disable no-param-reassign */
 import produce from 'immer';
 
-const dummyUser = data => ({
-  ...data,
-  nickname: 'gred',
-  Post: [],
-  Fllowings: [],
-  Fllowers: [],
-  id: 1,
-});
-
 // 초기 state
 // 설계를 잘 해줘야함
 export const initialState = {
@@ -148,7 +139,7 @@ const reducer = (state = initialState, action) =>
         break;
       case FOLLOW_USER_SUCCESS:
         draft.followLoading = false;
-        draft.me.Followings.push({ id: action.data });
+        draft.me.Followings.push({ id: action.data.UserId });
         draft.followDone = true;
         break;
       case FOLLOW_USER_FAILURE:
@@ -163,7 +154,7 @@ const reducer = (state = initialState, action) =>
       case UNFOLLOW_USER_SUCCESS:
         draft.unfollowLoading = false;
         draft.me.Followings = draft.me.Followings.filter(
-          v => v.id !== action.data,
+          v => v.id !== action.data.UserId,
         );
         draft.unfollowDone = true;
         break;
@@ -178,7 +169,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
-        draft.me = dummyUser(action.data);
+        draft.me = action.data;
         draft.logInDone = true;
         break;
       case LOG_IN_FAILURE:
@@ -218,6 +209,7 @@ const reducer = (state = initialState, action) =>
         draft.changeNicknameDone = false;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;

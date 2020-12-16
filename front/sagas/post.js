@@ -20,7 +20,6 @@ import {
   UNLIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
-  generateDummyPost,
 } from '../reducers/post';
 import { REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -51,7 +50,7 @@ function* addPost(action) {
 }
 
 function removePostAPI(data) {
-  return axios.delete('/api/post', data);
+  return axios.delete(`/post/${data}`);
 }
 
 function* removePost(action) {
@@ -75,7 +74,7 @@ function* removePost(action) {
 }
 
 function loadPostsAPI(data) {
-  return axios.get('/api/posts', data);
+  return axios.get('/posts', data);
 }
 
 function* loadPosts(action) {
@@ -83,7 +82,7 @@ function* loadPosts(action) {
     const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
-      data: generateDummyPost(10),
+      data: action.data,
     });
   } catch (err) {
     console.error(err);

@@ -31,32 +31,6 @@ export const initialState = {
   unlikePostError: null, // 댓글 업로드 실패 사유
 };
 
-export const generateDummyPost = num =>
-  Array(num)
-    .fill()
-    .map(() => ({
-      id: shortId.generate(),
-      User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-      },
-      content: faker.lorem.paragraph(),
-      Images: [
-        {
-          src: faker.image.image(),
-        },
-      ],
-      Comments: [
-        {
-          User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-          },
-          content: faker.lorem.sentence(),
-        },
-      ],
-    }));
-
 // action의 이름
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
 export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
@@ -74,7 +48,9 @@ export const UPLOAD_IMAGES_REQUEST = 'UPLOAD_IMAGES_REQUEST';
 export const UPLOAD_IMAGES_SUCCESS = 'UPLOAD_IMAGES_SUCCESS';
 export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 
-export const REMOVE_IMAGE = 'REMOVE_IMAGE';
+export const REMOVE_IMAGE_REQUEST = 'REMOVE_IMAGE_REQUEST';
+export const REMOVE_IMAGE_SUCCESS = 'REMOVE_IMAGE_SUCCESS';
+export const REMOVE_IMAGE_FAILURE = 'REMOVE_IMAGE_FAILURE';
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -175,7 +151,9 @@ const reducer = (state = initialState, action) =>
       case REMOVE_POST_SUCCESS:
         draft.removePostLoading = false;
         draft.removePostDone = true;
-        draft.mainPosts = draft.mainPosts.filter(v => v.id !== action.data);
+        draft.mainPosts = draft.mainPosts.filter(
+          v => v.id !== action.data.postID,
+        );
         break;
       case REMOVE_POST_FAILURE:
         draft.removePostLoading = false;
