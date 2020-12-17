@@ -20,6 +20,9 @@ import {
   UNLIKE_POST_FAILURE,
   UNLIKE_POST_REQUEST,
   UNLIKE_POST_SUCCESS,
+  UPLOAD_IMAGES_SUCCESS,
+  UPLOAD_IMAGES_REQUEST,
+  UPLOAD_IMAGES_FAILURE,
 } from '../reducers/post';
 import { REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -29,7 +32,6 @@ function addPostAPI(data) {
 
 function* addPost(action) {
   try {
-    // api 만들기 전 임시로 delay.
     const result = yield call(addPostAPI, action.data);
     console.log('action', action);
     const id = shortId.generate();
@@ -40,11 +42,11 @@ function* addPost(action) {
         content: action.data,
       },
     });
-  } catch (error) {
-    console.error(error);
+  } catch (err) {
+    console.error(err);
     yield put({
       type: ADD_POST_FAILURE,
-      data: error.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -68,7 +70,7 @@ function* removePost(action) {
     console.error(err);
     yield put({
       type: REMOVE_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -88,7 +90,7 @@ function* loadPosts(action) {
     console.error(err);
     yield put({
       type: LOAD_MAIN_POSTS_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -107,7 +109,7 @@ function* addComment(action) {
   } catch (err) {
     yield put({
       type: ADD_COMMENT_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -127,7 +129,7 @@ function* likePost(action) {
   } catch (err) {
     yield put({
       type: LIKE_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
     });
   }
 }
@@ -147,7 +149,27 @@ function* unlikePost(action) {
   } catch (err) {
     yield put({
       type: UNLIKE_POST_FAILURE,
-      data: err.response.data,
+      error: err.response.data,
+    });
+  }
+}
+
+function uploadImagesAPI(data) {
+  return axios.post(`/post/images`, data);
+}
+
+function* uploadImages(action) {
+  try {
+    const result = yield call(uploadImagesAPI, action.data);
+
+    yield put({
+      type: UPLOAD_IMAGES_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    yield put({
+      type: UPLOAD_IMAGES_FAILURE,
+      error: err.response.data,
     });
   }
 }
@@ -174,6 +196,10 @@ function* watchLikePost() {
 
 function* watchUnLikePost() {
   yield takeLatest(UNLIKE_POST_REQUEST, unlikePost);
+}
+
+function* watchUploadImages() {
+  yield takeLatest(UPLOAD_IMAGES_REQUEST, uploadImages);
 }
 
 export default function* postSaga() {

@@ -29,6 +29,10 @@ export const initialState = {
   unlikePostLoading: false, // 댓글 업로드 중
   unlikePostDone: false, // 댓글 업로드 성공
   unlikePostError: null, // 댓글 업로드 실패 사유
+
+  uploadImagesLoading: false,
+  uploadImagesDone: false,
+  uploadImagesError: false,
 };
 
 // action의 이름
@@ -206,6 +210,21 @@ const reducer = (state = initialState, action) =>
       case UNLIKE_POST_FAILURE:
         draft.unlikeLoading = false;
         draft.unlikeError = action.error;
+        break;
+      case UPLOAD_IMAGES_REQUEST:
+        draft.uploadImagesLoading = true;
+        draft.uploadImagesDone = false;
+        draft.uploadImagesError = null;
+        break;
+      case UPLOAD_IMAGES_SUCCESS: {
+        draft.imagePaths = action.data;
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesDone = true;
+        break;
+      }
+      case UPLOAD_IMAGES_FAILURE:
+        draft.uploadImagesLoading = false;
+        draft.uploadImagesError = action.error;
         break;
       default:
         break;

@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
 const { Post, Image, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
@@ -119,4 +121,25 @@ router.delete('/:postId/', isLoggedIn, async (req, res, next) => {
     }
 });
 
+// image upload (multipart/form-data)
+const upload = multer({
+    storage: multer.diskStorage({
+        destination(req, file, done) {
+            done(null, 'uploads');
+        },
+        filename(req, file, done) {
+            const ext = path.extname(file.originalname); // 확장자 추출 (.png)
+            const basename = path.basename(file.originalname, ext);
+
+            done(null, basename + new Date().getTime() + ext);
+        },
+    }),
+    limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+});
+router.post('/images', upload.array('image'), async (res, req, next) => {
+    console.log(req.files);
+    res.json(req.files.map(v => v.filename));
+    try {
+    } catch (error) {}
+});
 module.exports = router;
