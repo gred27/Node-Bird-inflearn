@@ -106,7 +106,6 @@ const Signup = () => {
   return (
     <>
       <Form onFinish={onSubmit} style={{ padding: 10 }}>
-        <TextInput value="135" />
         <div>
           <label htmlFor="user-email">이메일</label>
           <br />

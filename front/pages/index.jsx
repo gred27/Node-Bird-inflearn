@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -34,8 +35,12 @@ const Home = () => {
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]
+            ? mainPosts[mainPosts.length - 1].id
+            : 0;
           dispatch({
             type: LOAD_MAIN_POSTS_REQUEST,
+            lastId,
           });
         }
       }

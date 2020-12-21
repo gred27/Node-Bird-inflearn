@@ -6,9 +6,12 @@ const user = require('../models/user');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
+    if (!req.query.lastId) {
+        req.query.id = 0;
+    }
     try {
         const posts = await Post.findAll({
-            where: { id: lastId },
+            where: { id: req.query.lastId },
             limit: 10, // 10개만 가져오기
 
             order: [

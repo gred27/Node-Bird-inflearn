@@ -16,7 +16,7 @@ import CommentForm from './CommentForm';
 import PostCardContent from './PostCardContent';
 import FollowButton from './FollowButton';
 import { LIKE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post';
-import { Post } from '../../back/models';
+// import { Post } from '../../back/models';
 
 const CardWrapper = styled.div`
   margin-bottom: 20px;

@@ -6,6 +6,7 @@ export const initialState = {
   mainPosts: [], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
   hasMorePosts: true,
+
   loadPostLoading: false, // 포스트 로딩 중
   loadPostDone: false, // 포스트 로딩 성공
   loadPostError: null, // 포스트 로딩 실패 사유
@@ -95,26 +96,6 @@ export const addComment = data => ({
   data,
 });
 
-const dummyPost = data => ({
-  id: data.id,
-  content: data.content,
-  User: {
-    id: 1,
-    nickname: 'gred',
-  },
-  Images: [],
-  Comments: [],
-});
-
-const dummyComment = data => ({
-  id: shortId.generate(),
-  content: data,
-  User: {
-    id: 1,
-    nickname: 'gred',
-  },
-});
-
 const reducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
@@ -141,7 +122,7 @@ const reducer = (state = initialState, action) =>
       case ADD_POST_SUCCESS:
         draft.addPostLoading = false;
         draft.addPostDone = true;
-        draft.mainPosts.unshift(dummyPost(action.data));
+        // draft.mainPosts.unshift(dummyPost(action.data));
         break;
       case ADD_POST_FAILURE:
         draft.addPostLoading = false;
@@ -170,7 +151,7 @@ const reducer = (state = initialState, action) =>
         break;
       case ADD_COMMENT_SUCCESS: {
         const post = draft.mainPosts.find(v => v.id === action.data.postId);
-        post.Comments.unshift(dummyComment(action.data.content));
+        // post.Comments.unshift(dummyComment(action.data.content));
         draft.addCommentLoading = false;
         draft.addCommentDone = true;
         break;

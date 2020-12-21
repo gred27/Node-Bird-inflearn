@@ -84,13 +84,13 @@ function* loadPosts(action) {
     const result = yield call(loadPostsAPI, action.data);
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     yield put({
       type: LOAD_MAIN_POSTS_FAILURE,
-      error: err.response.data,
+      error: error.response.data,
     });
   }
 }

@@ -1,5 +1,5 @@
 const express = require('express');
-const { User } = require('../models');
+const { User, Post } = require('../models');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
@@ -20,7 +20,7 @@ router.get('/', async (req, res, next) => {
                     },
                     {
                         model: User,
-                        as: 'Follwings',
+                        as: 'Followings',
                         attributes: ['id'],
                     },
                     {
@@ -54,29 +54,38 @@ router.post('/login', isNotLoggedIn, (req, res, next) => {
 
         return req.login(user, async loginErr => {
             if (loginErr) {
-                console.error(loginErr);
+                console.error('login Error', loginErr);
                 return next(loginErr);
             }
-            const fullUserWithoutPassword = await User.findOne({
-                where: { id: user.id },
-                attributes: {
-                    exclude: ['password'],
-                },
-                include: [
-                    {
-                        model: Post,
+            try {
+                const fullUserWithoutPassword = await User.findOne({
+                    where: { id: user.id },
+                    attributes: {
+                        exclude: ['password'],
                     },
-                    {
-                        model: User,
-                        as: 'Follwings',
-                    },
-                    {
-                        model: User,
-                        as: 'Followers',
-                    },
-                ],
-            });
-            return res.status(200).json(fullUserWithoutPassword);
+                    include: [
+                        {
+                            model: Post,
+                            attributes: ['id'],
+                        },
+                        {
+                            model: User,
+                            as: 'Followings',
+                            attributes: ['id'],
+                        },
+                        {
+                            model: User,
+                            as: 'Followers',
+                            attributes: ['id'],
+                        },
+                    ],
+                });
+                console.log(fullUserWithoutPassword);
+                return res.status(200).json(fullUserWithoutPassword);
+            } catch (error) {
+                console.error(error);
+                return next(error);
+            }
         });
     })(req, res, next);
 });
