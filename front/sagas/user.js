@@ -122,11 +122,11 @@ function loadMyInfoAPI() {
 
 function* loadMyInfo(action) {
   try {
-    // const result = yield call(followAPI);
-    yield delay(1000);
+    const result = yield call(loadMyInfoAPI);
+
     yield put({
       type: LOAD_MY_INFO_SUCCESS,
-      data: action.data,
+      data: result.data,
     });
   } catch (err) {
     console.error(err);

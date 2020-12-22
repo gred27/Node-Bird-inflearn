@@ -1,6 +1,5 @@
 import { call, all, fork, takeLatest, put, delay } from 'redux-saga/effects';
 import axios from 'axios';
-import shortId from 'shortid';
 import {
   ADD_POST_REQUEST,
   ADD_POST_SUCCESS,
@@ -27,19 +26,18 @@ import {
 import { REMOVE_POST_OF_ME } from '../reducers/user';
 
 function addPostAPI(data) {
-  return axios.post('/api/post', data);
+  return axios.post('/post', data);
 }
 
 function* addPost(action) {
+  console.log('post action', action);
   try {
     const result = yield call(addPostAPI, action.data);
-    console.log('action', action);
-    const id = shortId.generate();
+    console.log('result:', result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: {
-        id,
-        content: action.data,
+        content: result.data,
       },
     });
   } catch (err) {
@@ -95,7 +93,7 @@ function* loadPosts(action) {
   }
 }
 function addCommentAPI(data) {
-  return axios.post(`/api/post/${data.postId}/comment`, data);
+  return axios.post(`/post/${data.postId}/comment`, data);
 }
 
 function* addComment(action) {
@@ -115,7 +113,7 @@ function* addComment(action) {
 }
 
 function likePostAPI(data) {
-  return axios.post(`/api/post/${data.postId}/like`, data);
+  return axios.post(`/post/${data.postId}/like`, data);
 }
 
 function* likePost(action) {
@@ -135,7 +133,7 @@ function* likePost(action) {
 }
 
 function unlikePostAPI(data) {
-  return axios.post(`/api/post/${data.postId}/unlike`, data);
+  return axios.post(`/post/${data.postId}/unlike`, data);
 }
 
 function* unlikePost(action) {
@@ -210,5 +208,6 @@ export default function* postSaga() {
     fork(watchAddComment),
     fork(watchUnLikePost),
     fork(watchLikePost),
+    fork(watchUploadImages),
   ]);
 }

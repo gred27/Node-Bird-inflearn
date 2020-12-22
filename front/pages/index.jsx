@@ -15,7 +15,6 @@ const Home = () => {
     state => state.post,
   );
   console.log('user', me);
-  // console.log('post', mainPosts);
 
   const dispatch = useDispatch();
 

@@ -10,7 +10,8 @@
     "build": "npx next build",
     "start": "npx next start",
     "lint": "eslint './**/*.{ts,tsx,js,jsx}'",
-    "lint:fix": "eslint --fix './**/*.{ts,tsx,js,jsx}'"
+    "lint:fix": "eslint --fix './**/*.{ts,tsx,js,jsx}'",
+    "clean": "rm -rf node_modules yarn.lock"
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
