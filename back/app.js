@@ -10,10 +10,34 @@
 //     console.log('server build')
 // });
 
-const express = require("express");
-const postRouter = require("./routes/post");
+const express = require('express');
+const cors = require('cors');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const morgan = require('morgan');
+
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
+
+const postsRouter = require('./routes/posts');
+// const usersRouter = require('./routes/users');
+const db = require('./models');
+const passportConfig = require('./passport');
+const { param } = require('./routes/post');
+
 const app = express();
 
+dotenv.config();
+passportConfig();
+
+db.sequelize
+    .sync()
+    .then(() => {
+        console.log('db 연결성공');
+    })
+    .catch(console.error);
 /*
   app.get =>가져오기
   app.post => 생성
@@ -24,21 +48,48 @@ const app = express();
   app.head => head만 가져옴  
 */
 
-/* api 문서는 swagger 자동생성*/
+/* 
+ use 안에 들어가는 express middleware
+ data를 req.body안에 넣어줌. 위치는 위쪽에
+*/
+app.use(morgan('dev'));
+app.use(
+    cors({
+        origin: true,
+        credentials: true, // 쿠키공유설정
+    }),
+);
 
-app.use("/post", postRouter);
-app.get("/", (req, res) => {
-    res.send("hello express");
-});
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser('nodebirdsecret'));
+app.use(
+    session({
+        saveUninitialized: false,
+        resave: false,
+        secret: process.env.COOKIE_SECRET,
+    }),
+);
+app.use(passport.initialize());
+app.use(passport.session());
+/* api 문서는 swagger 자동생성 */
+
+app.use('/posts', postsRouter);
+app.use('/post', postRouter);
+app.use('/user', userRouter);
 
 app.listen(3065, () => {
-    console.log("server start");
+    console.log('server start');
 });
 
-app.get("/api/posts", (req, res) => {
-    res.json([
-        { id: 1, content: "hello" },
-        { id: 2, content: "hello1" },
-        { id: 3, content: "hello2" },
-    ]);
-});
+// app.get('/', (req, res) => {
+//     res.send('hello express');
+// });
+
+// app.get('/api/posts', (req, res) => {
+//     res.json([
+//         { id: 1, content: 'hello' },
+//         { id: 2, content: 'hello1' },
+//         { id: 3, content: 'hello2' },
+//     ]);
+// });

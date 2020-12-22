@@ -1,15 +1,6 @@
 /* eslint-disable no-param-reassign */
 import produce from 'immer';
 
-const dummyUser = data => ({
-  ...data,
-  nickname: 'gred',
-  Post: [],
-  Fllowings: [],
-  Fllowers: [],
-  id: 1,
-});
-
 // 초기 state
 // 설계를 잘 해줘야함
 export const initialState = {
@@ -36,6 +27,10 @@ export const initialState = {
   changeNicknameLoading: false, // 닉네임 변경 시도중
   changeNicknameDone: false,
   changeNicknameError: null,
+
+  loadMyInfoLoading: false, // 닉네임 변경 시도중
+  loadMyInfoDone: false,
+  loadMyInfoError: null,
 
   me: null, // 내 정보
   userInfo: null, // 남의 정보
@@ -74,6 +69,10 @@ export const LOAD_FOLLOW_FAILURE = 'LOAD_FOLLOW_FAILURE';
 export const FOLLOW_USER_REQUEST = 'FOLLOW_USER_REQUEST';
 export const FOLLOW_USER_SUCCESS = 'FOLLOW_USER_SUCCESS';
 export const FOLLOW_USER_FAILURE = 'FOLLOW_USER_FAILURE';
+
+export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
+export const LOAD_MY_INFO_SUCCESS = 'LOAD_MY_INFO_SUCCESS';
+export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 
 export const UNFOLLOW_USER_REQUEST = 'UNFOLLOW_USER_REQUEST';
 export const UNFOLLOW_USER_SUCCESS = 'UNFOLLOW_USER_SUCCESS';
@@ -119,6 +118,20 @@ export const logoutRequestAction = data => ({
 const reducer = (state = initialState, action) =>
   produce(state, draft => {
     switch (action.type) {
+      case LOAD_MY_INFO_REQUEST:
+        draft.loadMyInfoLoading = true;
+        draft.loadMyInfoError = null;
+        draft.loadMyInfoDone = false;
+        break;
+      case LOAD_MY_INFO_SUCCESS:
+        draft.loadMyInfoLoading = false;
+        draft.me = action.data;
+        draft.loadMyInfoDone = true;
+        break;
+      case LOAD_MY_INFO_FAILURE:
+        draft.loadMyInfoLoading = false;
+        draft.loadMyInfoError = action.error;
+        break;
       case FOLLOW_USER_REQUEST:
         draft.followLoading = true;
         draft.followError = null;
@@ -126,7 +139,7 @@ const reducer = (state = initialState, action) =>
         break;
       case FOLLOW_USER_SUCCESS:
         draft.followLoading = false;
-        draft.me.Followings.push({ id: action.data });
+        draft.me.Followings.push({ id: action.data.UserId });
         draft.followDone = true;
         break;
       case FOLLOW_USER_FAILURE:
@@ -141,7 +154,7 @@ const reducer = (state = initialState, action) =>
       case UNFOLLOW_USER_SUCCESS:
         draft.unfollowLoading = false;
         draft.me.Followings = draft.me.Followings.filter(
-          v => v.id !== action.data,
+          v => v.id !== action.data.UserId,
         );
         draft.unfollowDone = true;
         break;
@@ -156,7 +169,7 @@ const reducer = (state = initialState, action) =>
         break;
       case LOG_IN_SUCCESS:
         draft.logInLoading = false;
-        draft.me = dummyUser(action.data);
+        draft.me = action.data;
         draft.logInDone = true;
         break;
       case LOG_IN_FAILURE:
@@ -196,6 +209,7 @@ const reducer = (state = initialState, action) =>
         draft.changeNicknameDone = false;
         break;
       case CHANGE_NICKNAME_SUCCESS:
+        draft.me.nickname = action.data.nickname;
         draft.changeNicknameLoading = false;
         draft.changeNicknameDone = true;
         break;
