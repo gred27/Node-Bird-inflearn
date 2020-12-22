@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 
 const Home = () => {
   // redux state hook으로 가져오기
@@ -13,11 +15,14 @@ const Home = () => {
     state => state.post,
   );
   console.log('user', me);
-  console.log('post', mainPosts);
+  // console.log('post', mainPosts);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_MY_INFO_REQUEST,
+    });
     dispatch({
       type: LOAD_MAIN_POSTS_REQUEST,
     });
@@ -30,8 +35,12 @@ const Home = () => {
         document.documentElement.scrollHeight - 300
       ) {
         if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]
+            ? mainPosts[mainPosts.length - 1].id
+            : 0;
           dispatch({
             type: LOAD_MAIN_POSTS_REQUEST,
+            lastId,
           });
         }
       }

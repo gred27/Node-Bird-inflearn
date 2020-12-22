@@ -4,8 +4,8 @@ import {
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
-  SIGN_UP_REQUEST,
   SIGN_UP_FAILURE,
+  SIGN_UP_REQUEST,
   SIGN_UP_SUCCESS,
   LOG_OUT_REQUEST,
   LOG_OUT_FAILURE,
@@ -16,19 +16,28 @@ import {
   UNFOLLOW_USER_REQUEST,
   UNFOLLOW_USER_SUCCESS,
   UNFOLLOW_USER_FAILURE,
+  LOAD_MY_INFO_REQUEST,
+  LOAD_MY_INFO_SUCCESS,
+  LOAD_MY_INFO_FAILURE,
+  CHANGE_NICKNAME_SUCCESS,
+  CHANGE_NICKNAME_FAILURE,
+  CHANGE_NICKNAME_REQUEST,
 } from '../reducers/user';
 
 // fork는 비동기 함수 호출
 // call은 동기 함수호출
 
-function signUpAPI() {
-  return axios.post('/api/signUp');
+// ============================================
+// Sign up API
+// ============================================
+function signUpAPI(data) {
+  return axios.post(`/user`, data);
 }
 
 function* signUp(action) {
   try {
-    // const result = yield call(signUpAPI, action.data);
-    yield delay(2000);
+    const result = yield call(signUpAPI, action.data);
+    console.log('signup', result);
     yield put({
       // put은 dispatch와 동일
       type: SIGN_UP_SUCCESS,
@@ -48,19 +57,20 @@ function* watchSignUp() {
   yield takeLatest(SIGN_UP_REQUEST, signUp);
 }
 
-// Login
+// ============================================
+// Login API
+// ============================================
+
 function loginAPI(data) {
-  return axios.post('/api/login', data);
+  return axios.post(`/user/login`, data);
 }
 
 function* login(action) {
   try {
-    console.log(action);
-    // const result = yield call(loginAPI, action.data);
-    yield delay(2000);
+    const result = yield call(loginAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
-      data: action.data,
+      data: result.data,
       //   data: result.data,
     });
   } catch (error) {
@@ -75,16 +85,16 @@ function* login(action) {
 function* watchLogin() {
   yield takeLatest(LOG_IN_REQUEST, login);
 }
-
+// ============================================
 // Logout
+// ============================================
 function logoutAPI(data) {
-  return axios.post('/api/logout', data);
+  return axios.post('/user/logout', data);
 }
 
 function* logout(action) {
   try {
-    // const result = yield call(logoutAPI, action.data);
-    yield delay(2000);
+    const result = yield call(logoutAPI, action.data);
     yield put({
       type: LOG_OUT_SUCCESS,
       data: action.data,
@@ -103,14 +113,44 @@ function* watchLogout() {
   yield takeLatest(LOG_OUT_REQUEST, logout);
 }
 
-function followAPI() {
-  return axios.post('/api/follow');
+// ============================================
+// Load My Info
+// ============================================
+function loadMyInfoAPI() {
+  return axios.get('/user');
+}
+
+function* loadMyInfo(action) {
+  try {
+    // const result = yield call(followAPI);
+    yield delay(1000);
+    yield put({
+      type: LOAD_MY_INFO_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_MY_INFO_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchLoadMyInfo() {
+  yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
+}
+
+// ============================================
+// Follow
+// ============================================
+function followAPI(data) {
+  return axios.post(`/user/${data}/follow`);
 }
 
 function* follow(action) {
   try {
-    // const result = yield call(followAPI);
-    yield delay(1000);
+    const result = yield call(followAPI, action.data);
     yield put({
       type: FOLLOW_USER_SUCCESS,
       data: action.data,
@@ -128,14 +168,16 @@ function* watchFollow() {
   yield takeLatest(FOLLOW_USER_REQUEST, follow);
 }
 
-function unfollowAPI() {
-  return axios.post('/api/unfollow');
+// ============================================
+// Unfollow
+// ============================================
+function unfollowAPI(data) {
+  return axios.delete(`/user/${data}/unfollow`);
 }
 
 function* unfollow(action) {
   try {
-    // const result = yield call(unfollowAPI);
-    yield delay(1000);
+    const result = yield call(unfollowAPI, action.data);
     yield put({
       type: UNFOLLOW_USER_SUCCESS,
       data: action.data,
@@ -153,6 +195,33 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_USER_REQUEST, unfollow);
 }
 
+// ============================================
+// Change Nickname
+// ============================================
+function changeNicknameAPI(data) {
+  return axios.patch('/nickname', data);
+}
+
+function* changeNickname(action) {
+  try {
+    const result = yield call(changeNicknameAPI, action.data);
+    yield put({
+      type: CHANGE_NICKNAME_SUCCESS,
+      data: action.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: CHANGE_NICKNAME_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function* watchChangeNickname() {
+  yield takeLatest(CHANGE_NICKNAME_REQUEST, changeNickname);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchFollow),
@@ -160,5 +229,7 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchLogin),
     fork(watchLogout),
+    fork(watchLoadMyInfo),
+    fork(watchChangeNickname),
   ]);
 }

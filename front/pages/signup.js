@@ -1,14 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import Router from 'next/router';
 import useInput from '../hooks/useInput';
 import { signUpAction } from '../reducers/user';
 
 const TextInput = ({ value }) => <div>{value}</div>;
 
 TextInput.propTypes = {
-  value: PropTypes.string,
+  value: PropTypes.string.isRequired,
 };
 
 const Signup = () => {
@@ -21,16 +22,37 @@ const Signup = () => {
   const [termError, setTermError] = useState(false);
 
   const [email, onChangeEmail] = useInput('');
-  const [nick, onChangeNick] = useInput('');
+  const [nickname, onChangeNickname] = useInput('');
   const [password, onChangePassword] = useInput('');
 
+  const { signupLoading, signUpDone, signUpError, me } = useSelector(
+    state => state.user,
+  );
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  });
+  useEffect(() => {
+    if (signUpDone) {
+      Router.push('/');
+    }
+  }, [signUpDone]);
+
+  useEffect(() => {
+    if (signUpError) {
+      // eslint-disable-next-line no-alert
+      alert(signUpError);
+    }
+  }, [signUpError]);
 
   const onSubmit = useCallback(
     e => {
       console.log({
         email,
-        nick,
+        nickname,
         password,
         passwordCheck,
         term,
@@ -48,7 +70,7 @@ const Signup = () => {
         signUpAction({
           email,
           password,
-          nick,
+          nickname,
         }),
       );
     },
@@ -84,7 +106,6 @@ const Signup = () => {
   return (
     <>
       <Form onFinish={onSubmit} style={{ padding: 10 }}>
-        <TextInput value="135" />
         <div>
           <label htmlFor="user-email">이메일</label>
           <br />
@@ -102,8 +123,8 @@ const Signup = () => {
           <Input
             name="user-nick"
             required
-            value={nick}
-            onChange={onChangeNick}
+            value={nickname}
+            onChange={onChangeNickname}
           />
         </div>
         <div>
