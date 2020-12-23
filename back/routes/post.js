@@ -62,7 +62,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
     }
 });
 // :이후에 들어가는건 params
-router.post('/:postId/commnet', isLoggedIn, async (req, res, next) => {
+router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     try {
         // 게시글 확인
         const post = await Post.findOne({

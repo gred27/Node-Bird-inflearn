@@ -30,10 +30,8 @@ function addPostAPI(data) {
 }
 
 function* addPost(action) {
-  console.log('post action', action);
   try {
     const result = yield call(addPostAPI, action.data);
-    console.log('result:', result);
     yield put({
       type: ADD_POST_SUCCESS,
       data: {
@@ -73,13 +71,15 @@ function* removePost(action) {
   }
 }
 
-function loadPostsAPI(data) {
-  return axios.get('/posts', data);
+function loadPostsAPI(lastId) {
+  return axios.get(`/posts?lastId=${lastId || 0}`);
 }
 
 function* loadPosts(action) {
   try {
-    const result = yield call(loadPostsAPI, action.data);
+    console.log(action);
+    const result = yield call(loadPostsAPI, action.lastId);
+    console.log(result);
     yield put({
       type: LOAD_MAIN_POSTS_SUCCESS,
       data: result.data,

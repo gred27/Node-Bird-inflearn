@@ -6,6 +6,7 @@ const user = require('../models/user');
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
+    console.log(req.query);
     try {
         const posts = await Post.findAll({
             where: { id: req.query.lastId },

@@ -15,6 +15,7 @@ const Home = () => {
     state => state.post,
   );
   console.log('user', me);
+  console.log('mainPosts', mainPosts);
 
   const dispatch = useDispatch();
 
@@ -52,6 +53,7 @@ const Home = () => {
       window.removeEventListener('scroll', onScroll);
     };
   }, [hasMorePosts, loadPostsLoading]);
+
   return (
     <AppLayout>
       {me && <PostForm />}

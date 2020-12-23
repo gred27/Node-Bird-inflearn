@@ -28,7 +28,9 @@ const PostCard = ({ post }) => {
   const [commentFormOpened, setCommentFormOpened] = useState(false);
   const { removePostLoading } = useSelector(state => state.post);
   const id = me && me.id;
-  const liked = post.Likers.find(v => v.id === id);
+
+  console.log(post);
+  const liked = post.Likers?.find(v => v.id === id);
 
   const onLike = useCallback(() => {
     dispatch({
@@ -51,7 +53,10 @@ const PostCard = ({ post }) => {
   return (
     <CardWrapper key={+post.createdAt}>
       <Card
-        cover={post.Images[0] && <PostImages images={post.Images} />}
+        cover={
+          post.Images.length &&
+          post.Images[0] && <PostImages images={post.Images} />
+        }
         actions={[
           <RetweetOutlined key="retweet" />,
           liked ? (
