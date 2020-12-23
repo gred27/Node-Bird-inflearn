@@ -29,8 +29,8 @@ const PostCard = ({ post }) => {
   const { removePostLoading } = useSelector(state => state.post);
   const id = me && me.id;
 
-  console.log(post);
   const liked = post.Likers?.find(v => v.id === id);
+  console.log(post, post.User);
 
   const onLike = useCallback(() => {
     dispatch({
@@ -54,7 +54,7 @@ const PostCard = ({ post }) => {
     <CardWrapper key={+post.createdAt}>
       <Card
         cover={
-          post.Images.length &&
+          post.Images?.length &&
           post.Images[0] && <PostImages images={post.Images} />
         }
         actions={[
@@ -69,7 +69,7 @@ const PostCard = ({ post }) => {
             key="more"
             content={
               <Button.Group>
-                {id && post.User.id === id ? (
+                {id && post?.User?.id === id ? (
                   <>
                     <Button>Edit</Button>
                     <Button type="danger">Delete</Button>
