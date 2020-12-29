@@ -40,6 +40,49 @@ router.get('/', async (req, res, next) => {
     }
 });
 
+router.get('/:userId', async (req, res, next) => {
+    try {
+        if (req.user) {
+            const fullUserWithoutPassword = await User.findOne({
+                where: { id: req.params.userId },
+                attributes: {
+                    exclude: ['password'],
+                },
+                include: [
+                    {
+                        model: Post,
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followings',
+                        attributes: ['id'],
+                    },
+                    {
+                        model: User,
+                        as: 'Followers',
+                        attributes: ['id'],
+                    },
+                ],
+            });
+
+            if (fullUserWithoutPassword) {
+                const data = fullUserWithoutPassword.toJSON(); // 개인정보 감춤
+                data.Posts = data.Posts.length;
+                data.Followers = data.Followers.length;
+                data.Followings = data.Followings.length;
+                res.status(200).json(data);
+            } else {
+                res.status(404).json('존재하지 않는 사용자');
+            }
+        } else {
+            res.status(200).json(null);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+});
+
 // login 전략 실행 + 미들웨어 확장 (req, res, next) 사용하기
 router.post('/login', isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {

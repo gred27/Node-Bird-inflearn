@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
+import { END } from 'redux-saga';
+import Axios from 'axios';
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
 import { LOAD_MAIN_POSTS_REQUEST } from '../reducers/post';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import wrapper from '../store/configureStore';
 
 const Home = () => {
   // redux state hook으로 가져오기
@@ -19,14 +22,7 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch({
-      type: LOAD_MY_INFO_REQUEST,
-    });
-    dispatch({
-      type: LOAD_MAIN_POSTS_REQUEST,
-    });
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     function onScroll() {
@@ -64,4 +60,18 @@ const Home = () => {
   );
 };
 
+// 상황에 따라서 데이터가 바뀌어야하면
+export const getServerSideProps = wrapper.getServerSideProps(async context => {
+  console.log(context);
+  const cookie = context.req ? context.req.headers.cookie : '';
+  Axios.defaults.headers.Cookie = cookie;
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch({
+    type: LOAD_MAIN_POSTS_REQUEST,
+  });
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 export default Home;
