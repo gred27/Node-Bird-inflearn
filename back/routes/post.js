@@ -21,6 +21,55 @@ const upload = multer({
     limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
 });
 
+router.get('/:postId', async (req, res, next) => {
+    console.log(req.body);
+    try {
+        const post = await Post.findOne({
+            where: { id: req.params.postId },
+        });
+
+        if (!post) {
+            return res.status(404).send('존재하지 않는 게시글 입니다.');
+        }
+
+        const fullPost = await Post.findOne({
+            where: { id: post.id },
+            include: [
+                {
+                    model: Image,
+                },
+                {
+                    model: Comment,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['id', 'nickname'],
+                        },
+                    ],
+                },
+                {
+                    model: User, // 게시글 성자
+                    attributes: ['id', 'nickname'],
+                },
+                {
+                    model: User, // 좋아요 누른 사람
+                    as: 'Likers',
+                    attributes: ['id'],
+                },
+                {
+                    model: User,
+                    as: 'Likers',
+                    attributes: ['id', 'nickname'],
+                },
+            ],
+        });
+        res.status(201).json(fullPost);
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
     console.log(req.body);
     try {
@@ -61,6 +110,7 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {
         next(error);
     }
 });
+
 // :이후에 들어가는건 params
 router.post('/:postId/comment', isLoggedIn, async (req, res, next) => {
     try {

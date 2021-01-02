@@ -1,15 +1,22 @@
-import shortId from 'shortid';
 import produce from 'immer';
-import faker from 'faker';
 
 export const initialState = {
   mainPosts: [], // 화면에 보일 포스트들
   imagePaths: [], // 미리보기 이미지 경로
+  singlePost: null,
   hasMorePosts: true,
 
   loadPostLoading: false, // 포스트 로딩 중
   loadPostDone: false, // 포스트 로딩 성공
   loadPostError: null, // 포스트 로딩 실패 사유
+
+  loadPostsLoading: false, // 전체 포스트 로딩 중
+  loadPostsDone: false, // 전체 포스트 로딩 성공
+  loadPostsError: null, // 전체 포스트 로딩 실패 사유
+
+  addCommentsLoading: false, // 댓글 업로드 중
+  addCommentsDone: false, // 댓글 업로드 성공
+  addCommentsError: null, // 댓글 업로드 실패 사유
 
   addPostLoading: false, // 포스트 업로드 중
   addPostDone: false, // 포스트 업로드 성공
@@ -18,10 +25,6 @@ export const initialState = {
   removePostLoading: false, // 포스트 삭제 중
   removePostDone: false, // 포스트 삭제 성공
   removePostError: null, // 포스트 삭제 실패 사유
-
-  addCommentsLoading: false, // 댓글 업로드 중
-  addCommentsDone: false, // 댓글 업로드 성공
-  addCommentsError: null, // 댓글 업로드 실패 사유
 
   likePostLoading: false, // 댓글 업로드 중
   likePostDone: false, // 댓글 업로드 성공
@@ -34,12 +37,20 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: false,
+
+  retweetLoading: false,
+  retweetDone: false,
+  retweetError: null,
 };
 
 // action의 이름
 export const LOAD_MAIN_POSTS_REQUEST = 'LOAD_MAIN_POSTS_REQUEST';
 export const LOAD_MAIN_POSTS_SUCCESS = 'LOAD_MAIN_POSTS_SUCCESS';
 export const LOAD_MAIN_POSTS_FAILURE = 'LOAD_MAIN_POSTS_FAILURE';
+
+export const LOAD_SINGLE_POST_REQUEST = 'LOAD_SINGLE_POST_REQUEST';
+export const LOAD_SINGLE_POST_SUCCESS = 'LOAD_SINGLE_POST_SUCCESS';
+export const LOAD_SINGLE_POST_FAILURE = 'LOAD_SINGLE_POST_FAILURE';
 
 export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
 export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
@@ -116,6 +127,21 @@ const reducer = (state = initialState, action) =>
       case LOAD_MAIN_POSTS_FAILURE:
         draft.loadPostsLoading = false;
         draft.loadPostsError = action.error;
+        break;
+      case LOAD_SINGLE_POST_REQUEST:
+        draft.loadPostLoading = true;
+        draft.loadPostDone = false;
+        draft.loadPostError = null;
+        break;
+      case LOAD_SINGLE_POST_SUCCESS: {
+        draft.loadPostLoading = false;
+        draft.loadPostDone = true;
+        draft.singlePost = action.data;
+        break;
+      }
+      case LOAD_SINGLE_POST_FAILURE:
+        draft.loadPostLoading = false;
+        draft.loadPostError = action.error;
         break;
       case ADD_POST_REQUEST:
         draft.addPostLoading = true;

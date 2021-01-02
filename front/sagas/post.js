@@ -22,6 +22,9 @@ import {
   UPLOAD_IMAGES_SUCCESS,
   UPLOAD_IMAGES_REQUEST,
   UPLOAD_IMAGES_FAILURE,
+  LOAD_SINGLE_POST_REQUEST,
+  LOAD_SINGLE_POST_SUCCESS,
+  LOAD_SINGLE_POST_FAILURE,
 } from '../reducers/post';
 import { REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -90,6 +93,28 @@ function* loadPosts(action) {
     });
   }
 }
+
+function loadSinglePostAPI(postId) {
+  return axios.get(`/post?postId=${postId || 0}`);
+}
+
+function* loadSinglePost(action) {
+  try {
+    const result = yield call(loadSinglePostAPI, action.data);
+    console.log(result);
+    yield put({
+      type: LOAD_SINGLE_POST_SUCCESS,
+      data: result.data,
+    });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: LOAD_SINGLE_POST_FAILURE,
+      error: error.response.data,
+    });
+  }
+}
+
 function addCommentAPI(data) {
   return axios.post(`/post/${data.postId}/comment`, data);
 }
@@ -175,7 +200,11 @@ function* watchAddPost() {
 }
 
 function* watchLoadPosts() {
-  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadPosts);
+  yield takeLatest(LOAD_MAIN_POSTS_REQUEST, loadSinglePost);
+}
+
+function* watchLoadSinglePost() {
+  yield takeLatest(LOAD_SINGLE_POST_REQUEST, loadPosts);
 }
 
 function* watchRemovePost() {
@@ -202,6 +231,7 @@ export default function* postSaga() {
   yield all([
     fork(watchAddPost),
     fork(watchLoadPosts),
+    fork(watchLoadSinglePost),
     fork(watchRemovePost),
     fork(watchAddComment),
     fork(watchUnLikePost),
