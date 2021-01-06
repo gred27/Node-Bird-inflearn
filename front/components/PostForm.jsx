@@ -1,17 +1,12 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { Form, Input, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  ADD_POST_REQUEST,
-  UPLOAD_IMAGES_REQUEST,
-  REMOVE_IMAGE,
-} from '../reducers/post';
+import { ADD_POST_REQUEST, UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE } from '../reducers/post';
+import useInput from '../hooks/useInput';
 
 const PostForm = () => {
-  const { imagePaths, addPostDone, addPostLoading } = useSelector(
-    state => state.post,
-  );
-  const [text, setText] = useState('');
+  const { imagePaths, addPostDone, addPostLoading } = useSelector(state => state.post);
+  const [text, onChangeText, setText] = useInput('');
   const dispatch = useDispatch();
   const imageInput = useRef();
 
@@ -21,10 +16,6 @@ const PostForm = () => {
       setText('');
     }
   }, [addPostDone]);
-
-  const onChangeText = useCallback(e => {
-    setText(e.target.value);
-  }, []);
 
   const onClickImageUpload = useCallback(() => {
     imageInput.current.click();
@@ -69,43 +60,19 @@ const PostForm = () => {
   );
 
   return (
-    <Form
-      style={{ margin: '10px 0 20px' }}
-      encType="multipart/form-data"
-      onFinish={onSubmitForm}
-    >
-      <Input.TextArea
-        value={text}
-        onChange={onChangeText}
-        maxLength={140}
-        placeholder="Have a Good Day?"
-      />
+    <Form style={{ margin: '10px 0 20px' }} encType="multipart/form-data" onFinish={onSubmitForm}>
+      <Input.TextArea value={text} onChange={onChangeText} maxLength={140} placeholder="Have a Good Day?" />
       <div>
-        <input
-          type="file"
-          multiple
-          hidden
-          ref={imageInput}
-          onChange={onChangeImages}
-        />
+        <input type="file" multiple hidden ref={imageInput} onChange={onChangeImages} />
         <Button onClick={onClickImageUpload}>Image Upload</Button>
-        <Button
-          type="primary"
-          style={{ float: 'right' }}
-          htmlType="submit"
-          loading={addPostLoading}
-        >
+        <Button type="primary" style={{ float: 'right' }} htmlType="submit" loading={addPostLoading}>
           끅끅
         </Button>
       </div>
       <div>
         {imagePaths.map(v => (
           <div key={v} style={{ display: 'inline-block' }}>
-            <img
-              src={`http://localhost:3000/${v}`}
-              style={{ width: 200, height: 200 }}
-              alt={v}
-            />
+            <img src={`http://localhost:3000/${v}`} style={{ width: 200, height: 200 }} alt={v} />
             <div>
               <Button>delete</Button>
             </div>

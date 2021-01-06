@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { ConsoleSqlOutlined } from '@ant-design/icons';
 import { END } from 'redux-saga';
 import Axios from 'axios';
+
 import AppLayout from '../components/AppLayout';
 import PostForm from '../components/PostForm';
 import PostCard from '../components/PostCard';
@@ -14,9 +15,7 @@ const Home = () => {
   // redux state hook으로 가져오기
   // 렌더링 되는것 확인하면서 성능 최적화를 위해 잘게 쪼개기
   const { me } = useSelector(state => state.user);
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(
-    state => state.post,
-  );
+  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector(state => state.post);
   console.log('user', me);
   console.log('mainPosts', mainPosts);
 
@@ -26,14 +25,9 @@ const Home = () => {
 
   useEffect(() => {
     function onScroll() {
-      if (
-        window.scrollY + document.documentElement.clientHeight >
-        document.documentElement.scrollHeight - 300
-      ) {
+      if (window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300) {
         if (hasMorePosts && !loadPostsLoading) {
-          const lastId = mainPosts[mainPosts.length - 1]
-            ? mainPosts[mainPosts.length - 1].id
-            : 0;
+          const lastId = mainPosts[mainPosts.length - 1] ? mainPosts[mainPosts.length - 1].id : 0;
           dispatch({
             type: LOAD_MAIN_POSTS_REQUEST,
             lastId,

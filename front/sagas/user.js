@@ -223,13 +223,5 @@ function* watchChangeNickname() {
 }
 
 export default function* userSaga() {
-  yield all([
-    fork(watchFollow),
-    fork(watchUnfollow),
-    fork(watchSignUp),
-    fork(watchLogin),
-    fork(watchLogout),
-    fork(watchLoadMyInfo),
-    fork(watchChangeNickname),
-  ]);
+  yield all([fork(watchFollow), fork(watchUnfollow), fork(watchSignUp), fork(watchLogin), fork(watchLogout), fork(watchLoadMyInfo), fork(watchChangeNickname)]);
 }

@@ -1,45 +1,44 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { Input, Form, Button, List, Card } from 'antd';
-import { StopOutlined } from '@ant-design/icons';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import Head from 'next/head';
+
+import Router from 'next/router';
 import NicknameEditForm from '../components/NicknameEditForm';
+import FollowList from '../components/FollowList';
+import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST } from '../reducers/user';
+import AppLayout from '../components/AppLayout';
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const { me } = useSelector(state => state.user);
+  useEffect(() => {
+    dispatch({
+      type: LOAD_FOLLOWERS_REQUEST,
+    });
+    dispatch({
+      type: LOAD_FOLLOWINGS_REQUEST,
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!(me && me.id)) {
+      Router.push('/');
+    }
+  }, [me && me.id]);
+
+  if (!me) {
+    return null;
+  }
   return (
     <>
-      <NicknameEditForm />
-      <List
-        style={{ marginBottom: '20px' }}
-        grid={{ gutter: 4, xs: 2, md: 3 }}
-        size="small"
-        header={<div>Follower List</div>}
-        loadMore={<Button style={{ width: '100%' }}>MORE</Button>}
-        dataSource={['Gred', 'Fool', 'NodeBird']}
-        renderItem={item => (
-          <List.Item style={{ marginTop: '20px' }}>
-            {/* 배열 안의 jsx 쓸때는 무조건 키를 작성. 배열쓴다는건 반복문 쓴다는 뜻이므로. */}
-            <Card actions={[<StopOutlined key="stop" />]}>
-              <Card.Meta description={item} />
-            </Card>
-          </List.Item>
-        )}
-      />
-      <List
-        style={{ marginBottom: '20px' }}
-        grid={{ gutter: 4, xs: 2, md: 3 }}
-        size="small"
-        header={<div>Following List</div>}
-        loadMore={<Button style={{ width: '100%' }}>MORE</Button>}
-        dataSource={['Gred', 'Fool', 'NodeBird']}
-        renderItem={item => (
-          <List.Item style={{ marginTop: '20px' }}>
-            <Card actions={[<StopOutlined key="stop" />]}>
-              <Card.Meta description={item} />
-            </Card>
-          </List.Item>
-        )}
-      />
+      <Head>
+        <title>내 프로필 | NodeBird</title>
+      </Head>
+      <AppLayout>
+        <NicknameEditForm />
+        <FollowList header="팔로잉" data={me.Followings} />
+        <FollowList header="팔로워" data={me.Followers} />
+      </AppLayout>
     </>
   );
 };

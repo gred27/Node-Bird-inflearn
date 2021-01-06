@@ -228,14 +228,5 @@ function* watchUploadImages() {
 }
 
 export default function* postSaga() {
-  yield all([
-    fork(watchAddPost),
-    fork(watchLoadPosts),
-    fork(watchLoadSinglePost),
-    fork(watchRemovePost),
-    fork(watchAddComment),
-    fork(watchUnLikePost),
-    fork(watchLikePost),
-    fork(watchUploadImages),
-  ]);
+  yield all([fork(watchAddPost), fork(watchLoadPosts), fork(watchLoadSinglePost), fork(watchRemovePost), fork(watchAddComment), fork(watchUnLikePost), fork(watchLikePost), fork(watchUploadImages)]);
 }

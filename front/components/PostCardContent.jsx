@@ -6,7 +6,7 @@ import { uid } from 'react-uid';
 const PostCardContent = ({ postData }) => {
   return (
     <div>
-      {postData.split(/(#[^\s#]+)/g).map((v, i) => {
+      {postData.split(/(#[^\s#]+)/g).map(v => {
         if (v.match(/(#[^\s#]+)/g)) {
           return (
             <Link href={`/hashtag/${v.slice(1)}`} key={uid(v)}>

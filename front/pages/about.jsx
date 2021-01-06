@@ -36,11 +36,7 @@ const About = () => {
             </div>,
           ]}
         >
-          <Card.Meta
-            avatar={<Avatar>{userInfo.nickname[0]}</Avatar>}
-            title={userInfo.nickname}
-            description="노드버드 매니아"
-          />
+          <Card.Meta avatar={<Avatar>{userInfo.nickname[0]}</Avatar>} title={userInfo.nickname} description="노드버드 매니아" />
         </Card>
       ) : null}
     </AppLayout>
