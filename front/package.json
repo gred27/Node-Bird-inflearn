@@ -23,7 +23,7 @@
     "babel-plugin-emotion": "^10.0.33",
     "faker": "^4.1.0",
     "immer": "^8.0.1",
-    "next": "^9.4.4",
+    "next": "^11.1.0",
     "next-redux-wrapper": "^6.0.2",
     "object-path": "0.11.5",
     "prop-types": "^15.7.2",
