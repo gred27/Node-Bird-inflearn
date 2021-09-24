@@ -19,7 +19,7 @@
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
     "antd": "^4.2.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "babel-plugin-emotion": "^10.0.33",
     "faker": "^4.1.0",
     "immer": "^9.0.6",
